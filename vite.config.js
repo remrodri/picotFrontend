@@ -5,9 +5,4 @@ import styleX from "vite-plugin-stylex";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), styleX()],
-  resolve: {
-    alias: {
-      "@mui/styled-engine": "@mui/styled-engine-sc",
-    },
-  },
 });
