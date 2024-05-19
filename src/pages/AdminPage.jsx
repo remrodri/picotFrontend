@@ -1,6 +1,6 @@
 function AdminPage() {
   return (
-    <div>admin page</div>
+    <div>admin page en blanco</div>
   )
 }
 export default AdminPage;
