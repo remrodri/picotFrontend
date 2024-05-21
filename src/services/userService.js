@@ -6,20 +6,41 @@ async function loginRequest(values) {
   try {
     const body = { email: values.email, password: values.password };
     console.log("body::: ", body);
-    const result = (await axios.post(`${apiUrl}/api/v1/login`, body));
+    const result = await axios.post(`${apiUrl}/api/v1/login`, body);
     console.log("result::: ", result);
     if (result.data.token) {
-      return {success:true,token:result.data.token};
+      return { success: true, token: result.data.token };
     } else {
-      return {success:false,message:"no se recibio tiken en la respuesta"}
+      return { success: false, message: "no se recibio tiken en la respuesta" };
     }
   } catch (error) {
     if (error.response) {
-      return{success:false,message:error.response.data.message||"error de autenticacion"}
+      return {
+        success: false,
+        message: error.response.data.message || "error de autenticacion",
+      };
     } else {
-      return{success:false,message:"error en la solicitud de inicio de sesion"}
+      return {
+        success: false,
+        message: "error en la solicitud de inicio de sesion",
+      };
     }
   }
 }
 
-export { loginRequest };
+async function getAllUsersRequest() {
+  try {
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    } else {
+      console.error("no se encontro un token en el localstorage");
+    }
+    const response = await axios.get(`${apiUrl}/api/v1/users`);
+    return response.data;
+  } catch (error) {
+    console.error(`ocurrio un error al obtener los users: ${error.message}`);
+  }
+}
+
+export { loginRequest, getAllUsersRequest };

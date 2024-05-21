@@ -22,13 +22,13 @@ const styles = stylex.create({
   }),
   mainContainer: () => ({
     height: "50rem",
-    width: "70rem",
+    // width: "70rem",
     display: "flex",
-    background: "rgba(255,255,255,0.2)",
+    background: "rgba(0, 0, 0, 0.2)",
     borderRadius: "2rem",
     boxShadow: "0 4px 30px rgba(0,0,0,0.1)",
     backdropFilter: "blur(5px)",
-    border: "1px solid rgba(255,255,255,0.3)",
+    border: "1px solid rgba(0,0,0,0.3)",
   }),
   rightContainer: () => ({
     height: "50rem",
@@ -105,6 +105,7 @@ function LoginPage() {
       const roleName = decodeTokenRoleName() || "";
       console.log("roleName::: ", roleName);
       if (roleName === "administrador") {
+        localStorage.setItem("role",roleName)
         navigate("/administrador");
         // console.log("ir a la pagina de administrador")
       }
@@ -118,7 +119,7 @@ function LoginPage() {
   return (
     <div {...stylex.props(styles.base())}>
       <div {...stylex.props(styles.mainContainer())}>
-        <div {...stylex.props(styles.showCaseContainer())}>showcase</div>
+        {/* <div {...stylex.props(styles.showCaseContainer())}>showcase</div> */}
         <div {...stylex.props(styles.rightContainer())}>
           <div {...stylex.props(styles.formContainer())}>
             <Formik
