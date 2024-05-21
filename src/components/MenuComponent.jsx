@@ -1,4 +1,5 @@
 import * as stylex from "@stylexjs/stylex";
+import { useNavigate } from "react-router-dom";
 
 const styles = stylex.create({
   base: () => ({
@@ -91,6 +92,7 @@ const styles = stylex.create({
 });
 
 function MenuComponent() {
+  const navigate = useNavigate();
   const getRoleName = () => {
     return localStorage.getItem("role");
   };
@@ -105,7 +107,9 @@ function MenuComponent() {
         <label htmlFor="">{getRoleName()}</label>
       </div>
       <div {...stylex.props(styles.buttonsContainer())}>
-        <button {...stylex.props(styles.buttonStyle())}>
+        <button {...stylex.props(styles.buttonStyle())}
+          onClick={() =>  navigate("personal")}
+        >
           Personal
         </button>
         <button {...stylex.props(styles.buttonStyle())}>

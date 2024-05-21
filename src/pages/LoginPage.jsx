@@ -106,7 +106,7 @@ function LoginPage() {
       console.log("roleName::: ", roleName);
       if (roleName === "administrador") {
         localStorage.setItem("role",roleName)
-        navigate("/administrador");
+        navigate("/administrador/personal");
         // console.log("ir a la pagina de administrador")
       }
     } catch (error) {
