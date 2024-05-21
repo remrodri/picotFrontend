@@ -88,7 +88,9 @@ function CardsComponent() {
           </label>
         </div>
         <div {...stylex.props(styles.buttonsContainer())}>
-          <button {...stylex.props(styles.buttonStyle())}>
+          <button {...stylex.props(styles.buttonStyle())}
+            onClick={()=>navigate("nuevo")}
+          >
             Registar personal
           </button>
         </div>

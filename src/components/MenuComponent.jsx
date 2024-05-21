@@ -1,4 +1,6 @@
 import * as stylex from "@stylexjs/stylex";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/auth";
 
 const styles = stylex.create({
   base: () => ({
@@ -91,9 +93,17 @@ const styles = stylex.create({
 });
 
 function MenuComponent() {
+  const { handleLogout } = useAuth();
+  const navigate = useNavigate();
+
   const getRoleName = () => {
     return localStorage.getItem("role");
   };
+
+  const onLogout = () => {
+    handleLogout();
+    navigate("/");
+  }
   return (
     <div {...stylex.props(styles.base())}>
       <div {...stylex.props(styles.appNameContainer())}>
@@ -105,7 +115,9 @@ function MenuComponent() {
         <label htmlFor="">{getRoleName()}</label>
       </div>
       <div {...stylex.props(styles.buttonsContainer())}>
-        <button {...stylex.props(styles.buttonStyle())}>
+        <button {...stylex.props(styles.buttonStyle())}
+          onClick={() =>  navigate("personal")}
+        >
           Personal
         </button>
         <button {...stylex.props(styles.buttonStyle())}>
@@ -113,7 +125,9 @@ function MenuComponent() {
         </button>
       </div>
       <div {...stylex.props(styles.buttonLogoutContainer())}>
-        <button {...stylex.props(styles.buttonLogoutStyle())}>
+        <button
+        onClick={()=>onLogout()}
+          {...stylex.props(styles.buttonLogoutStyle())}>
           Cerrar Sesion
         </button>
       </div>

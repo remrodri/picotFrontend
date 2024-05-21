@@ -43,4 +43,19 @@ async function getAllUsersRequest() {
   }
 }
 
-export { loginRequest, getAllUsersRequest };
+async function logoutRequest(userId) {
+  try {
+    const body = { userId };
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    }
+    const response = await axios.post(`${apiUrl}/api/v1/logout`, body);
+    console.log("response::: ", response);
+  } catch (error) {
+    console.error("no se encontro un token en el localStorage");
+    throw error;
+  }
+}
+
+export { loginRequest, getAllUsersRequest, logoutRequest };
