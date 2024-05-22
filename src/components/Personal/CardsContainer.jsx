@@ -3,7 +3,6 @@ import { useUsers } from "../../context/user/UserProvider";
 import { useRoles } from "../../context/role/RoleProvider";
 import { useEffect, useState } from "react";
 import UserCard from "./UserCard";
-import UserDetail from "./UserDetail";
 
 const styles = stylex.create({
   base: () => ({
@@ -55,7 +54,7 @@ function CardsContainer() {
   const { roles } = useRoles();
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
+  // const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
 
   useEffect(() => {
     handleSelectChange();
@@ -88,16 +87,16 @@ function CardsContainer() {
         <UserCard
           user={user}
           handleSelectedUser={handleSelectedUser}
-          setIsUserInfoOpen={setIsUserInfoOpen}
-          isUserInfoOpen={isUserInfoOpen}
+
+          selectedUser={ selectedUser}
         />
-        {selectedUser === user._id && (
+        {/* {selectedUser === user._id && (
           <UserDetail
             user={user}
             handleSelectedUser={handleSelectedUser}
             setIsUserInfoOpen={setIsUserInfoOpen}
           />
-        )}
+        )} */}
       </div>
     ));
   }

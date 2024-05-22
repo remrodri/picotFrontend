@@ -2,6 +2,7 @@
 import * as stylex from "@stylexjs/stylex";
 import { AccountCircle, MoreVert } from "@mui/icons-material";
 import { useState } from "react";
+import UserDetail from "./UserDetail";
 
 const styles = stylex.create({
   base: (value) => ({
@@ -51,9 +52,9 @@ const styles = stylex.create({
 });
 
 function UserCard(props) {
-  const { user, handleSelectedUser, isUserInfoOpen, setIsUserInfoOpen } = props;
+  const { user, handleSelectedUser, selectedUser } = props;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
+  const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
   // const [isMenuPosition, setMenuPosition] = useState({});
 
   const toggleMenu = () => {
@@ -80,46 +81,61 @@ function UserCard(props) {
   };
 
   return (
-    <div
-      {...stylex.props(styles.base(isUserInfoOpen ? "1rem 1rem 0 0" : "1rem"))}
-    >
-      <div {...stylex.props(styles.iconContainer())}>
-        <AccountCircle {...stylex.props(styles.iconStyle())} />
-      </div>
-      <div {...stylex.props(styles.dataInformationContainer())}>
-        <label htmlFor="">
-          {user.firstName} {user.lastName}
-        </label>
-        <label htmlFor="">{user.phone}</label>
-      </div>
-      <div {...stylex.props(styles.secondIconContainer())} onClick={toggleMenu}>
-        <MoreVert {...stylex.props(styles.secondIconStyle())} />
-        {isMenuOpen && (
-          <div {...stylex.props(styles.menuCard())} onMouseLeave={toggleMenu}>
-            <button
-              onClick={() => {
-                handleMenuItemClick("viewUser");
-              }}
-              {...stylex.props(styles.buttonMenuCardStyle())}
-            >
-              ver mas
-            </button>
-            <button
-              onClick={() => handleMenuItemClick("editUser")}
-              {...stylex.props(styles.buttonMenuCardStyle())}
-            >
-              editar
-            </button>
-            <button
-              onClick={() => handleMenuItemClick("removeUser")}
-              {...stylex.props(styles.buttonMenuCardStyle())}
-            >
-              borrar
-            </button>
-          </div>
+    <>
+      <div
+        {...stylex.props(
+          styles.base(isUserInfoOpen ? "1rem 1rem 0 0" : "1rem")
         )}
+      >
+        <div {...stylex.props(styles.iconContainer())}>
+          <AccountCircle {...stylex.props(styles.iconStyle())} />
+        </div>
+        <div {...stylex.props(styles.dataInformationContainer())}>
+          <label htmlFor="">
+            {user.firstName} {user.lastName}
+          </label>
+          <label htmlFor="">{user.phone}</label>
+        </div>
+        <div
+          {...stylex.props(styles.secondIconContainer())}
+          onClick={toggleMenu}
+        >
+          <MoreVert {...stylex.props(styles.secondIconStyle())} />
+          {isMenuOpen && (
+            <div {...stylex.props(styles.menuCard())} onMouseLeave={toggleMenu}>
+              <button
+                onClick={() => {
+                  handleMenuItemClick("viewUser");
+                }}
+                {...stylex.props(styles.buttonMenuCardStyle())}
+              >
+                ver mas
+              </button>
+              <button
+                onClick={() => handleMenuItemClick("editUser")}
+                {...stylex.props(styles.buttonMenuCardStyle())}
+              >
+                editar
+              </button>
+              <button
+                onClick={() => handleMenuItemClick("removeUser")}
+                {...stylex.props(styles.buttonMenuCardStyle())}
+              >
+                borrar
+              </button>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+      {selectedUser === user._id ? (
+          <UserDetail
+            user={user}
+            handleSelectedUser={handleSelectedUser}
+            setIsUserInfoOpen={setIsUserInfoOpen}
+          />
+      ) : null
+      }
+    </>
   );
 }
 export default UserCard;

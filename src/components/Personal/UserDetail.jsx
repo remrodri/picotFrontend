@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import * as stylex from "@stylexjs/stylex";
+import { useEffect} from "react";
 
 const styles = stylex.create({
   base: () => ({
@@ -12,8 +13,8 @@ const styles = stylex.create({
     borderRadius: "0 0 1rem 1rem",
     fontSize: "1.1rem",
   }),
-  cardContainer: ()=>({}),
-  buttonStyle: ()=>({
+  cardContainer: () => ({}),
+  buttonStyle: () => ({
     background: {
       default: "rgb(0, 127, 255)",
     },
@@ -22,15 +23,19 @@ const styles = stylex.create({
     borderRadius: "0.5rem",
     color: "aliceblue",
     fontFamily: "Poppins",
-    cursor:"pointer"
+    cursor: "pointer",
   }),
 });
 
-function UserDetail({
-  user,
-  handleSelectedUser,
-  setIsUserInfoOpen,
-}) {
+function UserDetail({ user, handleSelectedUser, setIsUserInfoOpen }) {
+  useEffect(() => {
+    return () => {
+      console.log('desmontado')
+      setIsUserInfoOpen(false)
+      
+    }
+  }, []);
+
   return (
     <div {...stylex.props(styles.base())}>
       <label htmlFor="">Informacion completa</label>
