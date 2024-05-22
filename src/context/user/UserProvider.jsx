@@ -1,6 +1,6 @@
 import { useContext, useState } from "react"
 import { UserContext } from "./UserContext"
-import { getAllUsersRequest } from "../../services/userService";
+import { createUserRequest, getAllUsersRequest } from "../../services/userService";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const useUsers = () => {
@@ -23,8 +23,20 @@ export const UserContextProvider = ({ children }) => {
       console.error("Error al obtener los users", error);
     }
   };
+
+  const createUser = async (user) => {
+    try {
+      const response = await createUserRequest(user);
+      if (response.success) {
+        setUsers([...users, user]);
+        return response;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
-    <UserContext.Provider value={{ users, loadUsers }}>
+    <UserContext.Provider value={{ users, loadUsers,createUser }}>
       {children}
     </UserContext.Provider>
   )
