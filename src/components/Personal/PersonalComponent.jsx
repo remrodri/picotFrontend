@@ -21,6 +21,7 @@ const styles = stylex.create({
     display: "flex",
     flexDirection: "column",
     gap: "1rem",
+    overflowY:"auto"
   }),
   topContainer: () => ({
     background: "rgba(35, 39, 46, 0.57)",
@@ -46,6 +47,7 @@ const styles = stylex.create({
     display: "flex",
     alignItems: "center",
     paddingLeft: "1rem",
+    //overflowY:"auto"
   }),
   buttonStyle: () => ({
     height: "3rem",

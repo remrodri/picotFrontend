@@ -58,4 +58,23 @@ async function logoutRequest(userId) {
   }
 }
 
-export { loginRequest, getAllUsersRequest, logoutRequest };
+async function createUserRequest(body) {
+  try {
+    const token = localStorage.getItem("token")
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    } else {
+      console.error("No se encontro un token en el localStorage");
+    }
+    const response = await axios.post(`${apiUrl}/api/v1/register`, body);
+    if (response.status === 201) {
+      return {success:true}
+    } else {
+      return{success:false}
+    }
+  } catch (error) {
+    console.log("Error en la creacion del usuario: ",error.message);
+  }
+}
+
+export { loginRequest, getAllUsersRequest, logoutRequest, createUserRequest };

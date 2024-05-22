@@ -11,6 +11,7 @@ import { RoleContextProvider } from "./context/role/RoleProvider";
 import { UserContextProvider } from "./context/user/UserProvider";
 import CardsContainer from "./components/Personal/CardsContainer";
 import UserForm from "./components/Personal/UserForm";
+import UserPreview from "./components/Personal/UserPreview";
 
 function App() {
   return (
@@ -41,13 +42,17 @@ const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element:<CardsContainer/>
+            element: <CardsContainer />,
           },
           {
             path: "nuevo",
-            element:<UserForm/>
-          }
-        ]
+            element: <UserForm />,
+          },
+          {
+            path: "preview/:id",
+            element: <UserPreview />,
+          },
+        ],
       },
     ],
   },
