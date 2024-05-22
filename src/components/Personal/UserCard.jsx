@@ -4,11 +4,11 @@ import { AccountCircle, MoreVert } from "@mui/icons-material";
 import { useState } from "react";
 
 const styles = stylex.create({
-  base: () => ({
+  base: (value) => ({
     minWidth: "40rem",
     height: "6rem",
     background: "rgb(242, 242, 242)",
-    borderRadius: "0.7rem",
+    borderRadius: value,
     display: "flex",
   }),
   iconContainer: () => ({
@@ -51,17 +51,24 @@ const styles = stylex.create({
 });
 
 function UserCard(props) {
-  const { user } = props;
+  const { user, handleSelectedUser, isUserInfoOpen, setIsUserInfoOpen } = props;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isMenuPosition, setMenuPosition] = useState({});
+  // const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
+  // const [isMenuPosition, setMenuPosition] = useState({});
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // const handleIsUserInfoOpen = () => {
+  //   setIsUserInfoOpen(!isUserInfoOpen);
+  // }
+
   const handleMenuItemClick = (option) => {
     if (option === "viewUser") {
       console.log("mostrar info completa");
+      setIsUserInfoOpen(true)
+      handleSelectedUser(user._id);
     }
     if (option === "editUser") {
       console.log("cargar fomulario de edicion");
@@ -73,7 +80,9 @@ function UserCard(props) {
   };
 
   return (
-    <div {...stylex.props(styles.base())}>
+    <div
+      {...stylex.props(styles.base(isUserInfoOpen ? "1rem 1rem 0 0" : "1rem"))}
+    >
       <div {...stylex.props(styles.iconContainer())}>
         <AccountCircle {...stylex.props(styles.iconStyle())} />
       </div>
@@ -88,7 +97,9 @@ function UserCard(props) {
         {isMenuOpen && (
           <div {...stylex.props(styles.menuCard())} onMouseLeave={toggleMenu}>
             <button
-              onClick={() => handleMenuItemClick("viewUser")}
+              onClick={() => {
+                handleMenuItemClick("viewUser");
+              }}
               {...stylex.props(styles.buttonMenuCardStyle())}
             >
               ver mas

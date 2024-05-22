@@ -3,6 +3,7 @@ import { useUsers } from "../../context/user/UserProvider";
 import { useRoles } from "../../context/role/RoleProvider";
 import { useEffect, useState } from "react";
 import UserCard from "./UserCard";
+import UserDetail from "./UserDetail";
 
 const styles = stylex.create({
   base: () => ({
@@ -15,7 +16,7 @@ const styles = stylex.create({
     height: "6rem",
     display: "flex",
     flexDirection: "column",
-    paddingBottom:"1rem"
+    paddingBottom: "1rem",
   }),
   filterContainer: () => ({
     background: "rgba(255, 255, 255, 0.2)",
@@ -23,17 +24,16 @@ const styles = stylex.create({
     height: "100%",
     alignContent: "center",
     paddingLeft: "1rem",
-    
   }),
   filterLabelStyle: () => ({
     marginRight: "1rem",
     color: "aliceblue",
     fontSize: "1.3rem",
-    fontWeight:"300"
+    fontWeight: "300",
   }),
   bottomContainer: () => ({
     //flexGrow: 1,
-    height:"100%",
+    height: "100%",
     background: "rgba(255, 255, 255, 0.2)",
     border: "1px solid rgba(255, 255, 255, 0.3)",
     borderBottomRightRadius: "1rem",
@@ -43,29 +43,34 @@ const styles = stylex.create({
     gap: "1rem",
     //flexWrap: "wrap",
     justifyContent: "center",
-    alignContent:"flex-start",
-    flexFlow: "row wrap"
-    
+    alignContent: "flex-start",
+    flexFlow: "row wrap",
+  }),
+  userCardContainer: () => ({
+    minWidth: "40rem",
   }),
 });
 function CardsContainer() {
   const { users } = useUsers();
   const { roles } = useRoles();
   const [filteredUsers, setFilteredUsers] = useState([]);
-  const [selectedUsers, setSelectedUser] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
 
   useEffect(() => {
-    handleSelectChange()
-  }, [users])
-  
+    handleSelectChange();
+  }, [users]);
+
+
+
   const handleSelectedUser = (userId) => {
     setSelectedUser(userId);
   };
 
-  function handleSelectChange(){
+  function handleSelectChange() {
     const roles = document.getElementById("selectOption");
-    const selectedRole = roles.options[roles.selectedIndex].value
-    console.log('selectedRole::: ', selectedRole);
+    const selectedRole = roles.options[roles.selectedIndex].value;
+    console.log("selectedRole::: ", selectedRole);
     filterUsers(selectedRole);
   }
 
@@ -73,25 +78,37 @@ function CardsContainer() {
     if (roleId === "all") {
       setFilteredUsers(users);
     } else {
-      setFilteredUsers(users.filter((user)=>user.roleId===roleId))
+      setFilteredUsers(users.filter((user) => user.roleId === roleId));
     }
   }
 
   function showUsers() {
     return filteredUsers.map((user) => (
-      <UserCard
-        key={user._id}
-        user={user}
-        handleSelectedUser={handleSelectedUser}
-      />
-    ))
+      <div key={user._id}>
+        <UserCard
+          user={user}
+          handleSelectedUser={handleSelectedUser}
+          setIsUserInfoOpen={setIsUserInfoOpen}
+          isUserInfoOpen={isUserInfoOpen}
+        />
+        {selectedUser === user._id && (
+          <UserDetail
+            user={user}
+            handleSelectedUser={handleSelectedUser}
+            setIsUserInfoOpen={setIsUserInfoOpen}
+          />
+        )}
+      </div>
+    ));
   }
 
   return (
     <div {...stylex.props(styles.base())}>
       <div {...stylex.props(styles.topContainer())}>
         <div {...stylex.props(styles.filterContainer())}>
-          <label htmlFor="" {...stylex.props(styles.filterLabelStyle())}>Filtrar por rol</label>
+          <label htmlFor="" {...stylex.props(styles.filterLabelStyle())}>
+            Filtrar por rol
+          </label>
           <select
             id="selectOption"
             defaultValue={"all"}
@@ -106,9 +123,8 @@ function CardsContainer() {
           </select>
         </div>
       </div>
-      <div {...stylex.props(styles.bottomContainer())}>{ showUsers()}</div>
+      <div {...stylex.props(styles.bottomContainer())}>{showUsers()}</div>
     </div>
   );
 }
 export default CardsContainer;
-// padding:"1rem"
