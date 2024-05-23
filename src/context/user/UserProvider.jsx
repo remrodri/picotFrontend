@@ -1,6 +1,6 @@
 import { useContext, useState } from "react"
 import { UserContext } from "./UserContext"
-import { createUserRequest, getAllUsersRequest } from "../../services/userService";
+import { createUserRequest, getAllUsersRequest, updateUserRequest } from "../../services/userService";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const useUsers = () => {
@@ -35,8 +35,21 @@ export const UserContextProvider = ({ children }) => {
       console.log(error);
     }
   }
+  const updateUser = async (id,userUpdated) => {
+    try {
+      const response = await updateUserRequest(id, userUpdated);
+      // console.log('response::: ', response.success);
+      if (response.success) { 
+        setUsers(users.map((user)=>(user._id===id)?{...user, ...userUpdated}:user));
+        return response;
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
-    <UserContext.Provider value={{ users, loadUsers,createUser }}>
+    <UserContext.Provider value={{ users, loadUsers,createUser,updateUser }}>
       {children}
     </UserContext.Provider>
   )

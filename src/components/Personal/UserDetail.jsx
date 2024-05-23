@@ -34,6 +34,7 @@ function UserDetail({ user, handleSelectedUser, setIsUserInfoOpen }) {
       setIsUserInfoOpen(false)
       
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

@@ -75,7 +75,6 @@ async function createUserRequest(body) {
   } catch (error) {
     console.log("Error en la creacion del usuario: ", error.message);
   }
-  
 }
 async function removeUserRequest(id) {
   try {
@@ -96,6 +95,24 @@ async function removeUserRequest(id) {
     throw error;
   }
 }
+async function updateUserRequest(id, body) {
+  try {
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    } else {
+      console.error("No se encontro token en el local storage");
+    }
+    const response = await axios.patch(`${apiUrl}/api/v1/users/${id}`, body);
+    if (response.status === 200) {
+      return { success: true };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.log("Error en la actualizacion de usuario: ", error.message);
+  }
+}
 
 export {
   loginRequest,
@@ -103,4 +120,5 @@ export {
   logoutRequest,
   createUserRequest,
   removeUserRequest,
+  updateUserRequest,
 };

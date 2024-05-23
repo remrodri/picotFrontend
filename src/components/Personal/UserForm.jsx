@@ -110,7 +110,7 @@ const MySwal = withReactContent(Swal);
 function UserForm() {
   const [formValues, setFormValues] = useState(null);
   const { roles } = useRoles();
-  const { users, createUser } = useUsers();
+  const { users, createUser, updateUser } = useUsers();
   const navigate = useNavigate();
   const params = useParams();
   const initialValues = {
@@ -124,7 +124,8 @@ function UserForm() {
 
   useEffect(() => {
     loadUser();
-  }, [users,params.id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [users, params.id]);
 
   const loadUser = () => {
     if (params.id) {
@@ -132,12 +133,12 @@ function UserForm() {
       //console.log("userFinded::: ", userFinded);
       if (userFinded) {
         setFormValues({
-          firstName: userFinded.firstName||"",
-          lastName: userFinded.lastName||"",
-          roleId: userFinded.roleId||"",
-          phone: userFinded.phone||"",
-          email: userFinded.email||"",
-          ci: userFinded.ci||"",
+          firstName: userFinded.firstName || "",
+          lastName: userFinded.lastName || "",
+          roleId: userFinded.roleId || "",
+          phone: userFinded.phone || "",
+          email: userFinded.email || "",
+          ci: userFinded.ci || "",
         });
       } else {
         setFormValues(initialValues);
@@ -196,8 +197,10 @@ function UserForm() {
       preConfirm: async () => {
         try {
           //console.log("regitrar", values);
-          const response = await createUser(values);
-          //console.log("response::: ", response);
+          const response = params.id
+            ? await updateUser(params.id, values)
+            : await createUser(values);
+          // console.log("response::: ", response);
           if (response.success) {
             //console.log("se registro::: ");
             const Toast = Swal.mixin({
@@ -213,7 +216,9 @@ function UserForm() {
             });
             Toast.fire({
               icon: "success",
-              title: "Se registro Exitosamente",
+              title: params.id
+                ? "Se actualizo Exitosamente"
+                : "Se registro Exitosamente",
             });
           }
         } catch (error) {
@@ -226,7 +231,7 @@ function UserForm() {
     });
   };
 
-  if (formValues===null) {
+  if (formValues === null) {
     return null;
   }
   //console.log("formvalues", formValues);
@@ -235,11 +240,13 @@ function UserForm() {
       <div {...stylex.props(styles.mainContainer())}>
         <div {...stylex.props(styles.labelTittleContainer())}>
           <label htmlFor="" {...stylex.props(styles.labelTittleStyle())}>
-            {params.id?"Formulario de actualizacion de datos":"Formulario de registro de datos"}
+            {params.id
+              ? "Formulario de actualizacion de datos"
+              : "Formulario de registro de datos"}
           </label>
         </div>
         <Formik
-          initialValues={params.id?formValues:initialValues}
+          initialValues={params.id ? formValues : initialValues}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
           enableReinitialize={true}
