@@ -1,6 +1,6 @@
 import { useContext, useState } from "react"
 import { UserContext } from "./UserContext"
-import { createUserRequest, getAllUsersRequest, updateUserRequest } from "../../services/userService";
+import { createUserRequest, getAllUsersRequest, removeUserRequest, updateUserRequest } from "../../services/userService";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const useUsers = () => {
@@ -47,9 +47,20 @@ export const UserContextProvider = ({ children }) => {
       console.log(error)
     }
   }
+  const removeUser = async (id) => {
+    try {
+      const response = await removeUserRequest(id);
+      if (response.success) { 
+        setUsers(users.filter((user) => (user._id !== id)));
+        return response;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
-    <UserContext.Provider value={{ users, loadUsers,createUser,updateUser }}>
+    <UserContext.Provider value={{ users, loadUsers,createUser,updateUser,removeUser }}>
       {children}
     </UserContext.Provider>
   )

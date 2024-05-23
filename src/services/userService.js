@@ -87,9 +87,9 @@ async function removeUserRequest(id) {
     }
     const response = await axios.delete(`${apiUrl}/api/v1/users/${id}`);
     if (response.status === 200) {
-      return "Usuario eliminado correctamente";
+      return {success:true};
     } else {
-      throw new Error("No se pudo eliminar el usuario");
+      return{success:false}
     }
   } catch (error) {
     console.log("Error al intentar borrar el usuario con id: ", id);

@@ -4,6 +4,9 @@ import { AccountCircle, MoreVert } from "@mui/icons-material";
 import { useState } from "react";
 import UserDetail from "./UserDetail";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import { useUsers } from "../../context/user/UserProvider";
 
 const styles = stylex.create({
   base: (value) => ({
@@ -52,25 +55,54 @@ const styles = stylex.create({
   }),
 });
 
+const MySwal = withReactContent(Swal);
+
 function UserCard(props) {
   const { user, handleSelectedUser, selectedUser } = props;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const { removeUser } = useUsers();
   // const [isMenuPosition, setMenuPosition] = useState({});
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // const handleIsUserInfoOpen = () => {
-  //   setIsUserInfoOpen(!isUserInfoOpen);
-  // }
+  function handleRemoveUser() {
+    MySwal.fire({
+      title: "Este usuario sera eliminado",
+      showCancelButton: true,
+      cancelButtonText: <p>Cancelar</p>,
+      confirmButtonText: <p>Eliminar</p>,
+      confirmButtonColor: "rgb(51,153,255)",
+      preConfirm: async () => {
+        const response = await removeUser(user._id);
+        if (response.success) {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 6000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({
+            icon: "success",
+            title:"Se elimino exitosamente"
+          })
+        }
+      },
+    });
+  }
 
   const handleMenuItemClick = (option) => {
     if (option === "viewUser") {
       // console.log("mostrar info completa");
-      setIsUserInfoOpen(true)
+      setIsUserInfoOpen(true);
       handleSelectedUser(user._id);
     }
     if (option === "editUser") {
@@ -79,6 +111,7 @@ function UserCard(props) {
     }
     if (option === "removeUser") {
       console.log("eliminar user");
+      handleRemoveUser()
     }
     toggleMenu();
   };
@@ -131,13 +164,12 @@ function UserCard(props) {
         </div>
       </div>
       {selectedUser === user._id ? (
-          <UserDetail
-            user={user}
-            handleSelectedUser={handleSelectedUser}
-            setIsUserInfoOpen={setIsUserInfoOpen}
-          />
-      ) : null
-      }
+        <UserDetail
+          user={user}
+          handleSelectedUser={handleSelectedUser}
+          setIsUserInfoOpen={setIsUserInfoOpen}
+        />
+      ) : null}
     </>
   );
 }
