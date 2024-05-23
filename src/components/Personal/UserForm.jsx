@@ -1,12 +1,12 @@
 import * as stylex from "@stylexjs/stylex";
 import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useRoles } from "../../context/role/RoleProvider";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import UserPreview from "./UserPreview";
 import { useUsers } from "../../context/user/UserProvider";
+import { useEffect, useState } from "react";
 
 const styles = stylex.create({
   base: () => ({
@@ -108,9 +108,11 @@ const styles = stylex.create({
 const MySwal = withReactContent(Swal);
 
 function UserForm() {
+  const [formValues, setFormValues] = useState({});
   const { roles } = useRoles();
-  const { createUser } = useUsers();
+  const { users, createUser } = useUsers();
   const navigate = useNavigate();
+  const params = useParams();
   const initialValues = {
     firstName: "",
     lastName: "",
@@ -118,6 +120,31 @@ function UserForm() {
     phone: "",
     email: "",
     ci: "",
+  };
+
+  useEffect(() => {
+    loadUser();
+  }, [users,params.id]);
+
+  const loadUser = () => {
+    if (params.id) {
+      const userFinded = users.find((user) => user._id === params.id);
+      //console.log("userFinded::: ", userFinded);
+      if (userFinded) {
+        setFormValues({
+          firstName: userFinded.firstName||"",
+          lastName: userFinded.lastName||"",
+          roleId: userFinded.roleId||"",
+          phone: userFinded.phone||"",
+          email: userFinded.email||"",
+          ci: userFinded.ci||"",
+        });
+      } else {
+        setFormValues(initialValues);
+      }
+    } else {
+      setFormValues(initialValues);
+    }
   };
 
   function filteredRoles() {
@@ -161,16 +188,18 @@ function UserForm() {
         <p {...stylex.props(styles.swalButtonStyle())}>Cancelar</p>
       ),
       confirmButtonText: (
-        <p {...stylex.props(styles.swalButtonStyle())}>Registrar</p>
+        <p {...stylex.props(styles.swalButtonStyle())}>
+          {params.id ? "Actualizar" : "Registrar"}
+        </p>
       ),
       confirmButtonColor: "rgb(51, 153, 255)",
       preConfirm: async () => {
         try {
-          console.log("regitrar", values);
+          //console.log("regitrar", values);
           const response = await createUser(values);
-          console.log("response::: ", response);
-          if (response.success) { 
-            console.log('se registro::: ');
+          //console.log("response::: ", response);
+          if (response.success) {
+            //console.log("se registro::: ");
             const Toast = Swal.mixin({
               toast: true,
               position: "top-end",
@@ -180,35 +209,37 @@ function UserForm() {
               didOpen: (toast) => {
                 toast.onmouseenter = Swal.stopTimer;
                 toast.onmouseleave = Swal.resumeTimer;
-              }
+              },
             });
             Toast.fire({
               icon: "success",
-              title: "Se registro Exitosamente"
+              title: "Se registro Exitosamente",
             });
           }
         } catch (error) {
-          console.error(error)
+          console.error(error);
         } finally {
-          setSubmitting(false)
+          setSubmitting(false);
           navigate("/administrador/personal");
         }
-      }
-    })
+      },
+    });
   };
 
+  //console.log("formvalues", formValues);
   return (
     <div {...stylex.props(styles.base())}>
       <div {...stylex.props(styles.mainContainer())}>
         <div {...stylex.props(styles.labelTittleContainer())}>
           <label htmlFor="" {...stylex.props(styles.labelTittleStyle())}>
-            Registro de nuevo usuario
+            {params.id?"Formulario de actualizacion de datos":"Formulario de registro de datos"}
           </label>
         </div>
         <Formik
-          initialValues={initialValues}
+          initialValues={params.id?formValues:initialValues}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
+          enableReinitialize={true}
         >
           {({ isSubmitting }) => (
             <Form {...stylex.props(styles.formContainer())}>
@@ -222,6 +253,7 @@ function UserForm() {
                 <Field
                   type="text"
                   name="firstName"
+                  // value={formValues.firstName}
                   {...stylex.props(styles.fieldStyle())}
                 />
                 <ErrorMessage
@@ -240,6 +272,7 @@ function UserForm() {
                 <Field
                   type="text"
                   name="lastName"
+                  // value={formValues.lastName}
                   {...stylex.props(styles.fieldStyle())}
                 />
                 <ErrorMessage
@@ -258,6 +291,7 @@ function UserForm() {
                 <Field
                   as="select"
                   name="roleId"
+                  // value={formValues.roleId}
                   {...stylex.props(styles.fieldStyle())}
                 >
                   <option value={""}> Seleccione un rol...</option>
@@ -283,6 +317,7 @@ function UserForm() {
                 <Field
                   type="text"
                   name="phone"
+                  // value={formValues.phone}
                   {...stylex.props(styles.fieldStyle())}
                 />
                 <ErrorMessage
@@ -298,6 +333,7 @@ function UserForm() {
                 <Field
                   type="text"
                   name="ci"
+                  // value={formValues.ci}
                   {...stylex.props(styles.fieldStyle())}
                 />
                 <ErrorMessage
@@ -316,6 +352,7 @@ function UserForm() {
                 <Field
                   type="email"
                   name="email"
+                  // value={formValues.email}
                   {...stylex.props(styles.fieldStyle())}
                 />
                 <ErrorMessage

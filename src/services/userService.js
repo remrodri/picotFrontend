@@ -60,7 +60,7 @@ async function logoutRequest(userId) {
 
 async function createUserRequest(body) {
   try {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     if (token) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     } else {
@@ -68,13 +68,39 @@ async function createUserRequest(body) {
     }
     const response = await axios.post(`${apiUrl}/api/v1/register`, body);
     if (response.status === 201) {
-      return {success:true}
+      return { success: true };
     } else {
-      return{success:false}
+      return { success: false };
     }
   } catch (error) {
-    console.log("Error en la creacion del usuario: ",error.message);
+    console.log("Error en la creacion del usuario: ", error.message);
+  }
+  
+}
+async function removeUserRequest(id) {
+  try {
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    } else {
+      console.error("No se encontro un token en el almacenamiento local");
+    }
+    const response = await axios.delete(`${apiUrl}/api/v1/users/${id}`);
+    if (response.status === 200) {
+      return "Usuario eliminado correctamente";
+    } else {
+      throw new Error("No se pudo eliminar el usuario");
+    }
+  } catch (error) {
+    console.log("Error al intentar borrar el usuario con id: ", id);
+    throw error;
   }
 }
 
-export { loginRequest, getAllUsersRequest, logoutRequest, createUserRequest };
+export {
+  loginRequest,
+  getAllUsersRequest,
+  logoutRequest,
+  createUserRequest,
+  removeUserRequest,
+};

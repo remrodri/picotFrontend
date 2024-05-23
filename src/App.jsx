@@ -11,7 +11,6 @@ import { RoleContextProvider } from "./context/role/RoleProvider";
 import { UserContextProvider } from "./context/user/UserProvider";
 import CardsContainer from "./components/Personal/CardsContainer";
 import UserForm from "./components/Personal/UserForm";
-import UserPreview from "./components/Personal/UserPreview";
 
 function App() {
   return (
@@ -49,9 +48,9 @@ const router = createBrowserRouter([
             element: <UserForm />,
           },
           {
-            path: "preview/:id",
-            element: <UserPreview />,
-          },
+            path: "editar/:id",
+            element:<UserForm/>
+          }
         ],
       },
     ],

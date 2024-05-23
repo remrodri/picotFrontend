@@ -30,7 +30,7 @@ const styles = stylex.create({
 function UserDetail({ user, handleSelectedUser, setIsUserInfoOpen }) {
   useEffect(() => {
     return () => {
-      console.log('desmontado')
+      // console.log('desmontado')
       setIsUserInfoOpen(false)
       
     }
