@@ -41,7 +41,7 @@ const styles = stylex.create({
     //flexDirection:"row",
     gap: "1rem",
     //flexWrap: "wrap",
-    justifyContent: "center",
+    // justifyContent: "center",
     alignContent: "flex-start",
     flexFlow: "row wrap",
   }),

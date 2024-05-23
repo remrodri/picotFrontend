@@ -108,7 +108,7 @@ const styles = stylex.create({
 const MySwal = withReactContent(Swal);
 
 function UserForm() {
-  const [formValues, setFormValues] = useState({});
+  const [formValues, setFormValues] = useState(null);
   const { roles } = useRoles();
   const { users, createUser } = useUsers();
   const navigate = useNavigate();
@@ -226,6 +226,9 @@ function UserForm() {
     });
   };
 
+  if (formValues===null) {
+    return null;
+  }
   //console.log("formvalues", formValues);
   return (
     <div {...stylex.props(styles.base())}>
