@@ -67,8 +67,9 @@ async function createUserRequest(body) {
       console.error("No se encontro un token en el localStorage");
     }
     const response = await axios.post(`${apiUrl}/api/v1/register`, body);
+    console.log('response::: ', response.data.userId);
     if (response.status === 201) {
-      return { success: true };
+      return { success: true ,userId:response.data.userId};
     } else {
       return { success: false };
     }

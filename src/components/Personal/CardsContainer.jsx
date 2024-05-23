@@ -58,10 +58,8 @@ function CardsContainer() {
 
   useEffect(() => {
     handleSelectChange();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [users]);
-
-
 
   const handleSelectedUser = (userId) => {
     setSelectedUser(userId);
@@ -84,21 +82,12 @@ function CardsContainer() {
 
   function showUsers() {
     return filteredUsers.map((user) => (
-      <div key={user._id}>
-        <UserCard
-          user={user}
-          handleSelectedUser={handleSelectedUser}
-
-          selectedUser={ selectedUser}
-        />
-        {/* {selectedUser === user._id && (
-          <UserDetail
-            user={user}
-            handleSelectedUser={handleSelectedUser}
-            setIsUserInfoOpen={setIsUserInfoOpen}
-          />
-        )} */}
-      </div>
+      <UserCard
+        key={user._id}
+        user={user}
+        handleSelectedUser={handleSelectedUser}
+        selectedUser={selectedUser}
+      />
     ));
   }
 

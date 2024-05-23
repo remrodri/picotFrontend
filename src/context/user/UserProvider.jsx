@@ -28,7 +28,7 @@ export const UserContextProvider = ({ children }) => {
     try {
       const response = await createUserRequest(user);
       if (response.success) {
-        setUsers([...users, user]);
+        setUsers([...users, {...user,_id:response.userId}]);
         return response;
       }
     } catch (error) {
