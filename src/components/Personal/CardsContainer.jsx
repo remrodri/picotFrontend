@@ -69,7 +69,7 @@ function CardsContainer() {
   function handleSelectChange() {
     const roles = document.getElementById("selectOption");
     const selectedRole = roles.options[roles.selectedIndex].value;
-    console.log("selectedRole::: ", selectedRole);
+    //console.log("selectedRole::: ", selectedRole);
     filterUsers(selectedRole);
   }
 

@@ -3,6 +3,7 @@ import * as stylex from "@stylexjs/stylex";
 import { AccountCircle, MoreVert } from "@mui/icons-material";
 import { useState } from "react";
 import UserDetail from "./UserDetail";
+import { useNavigate } from "react-router-dom";
 
 const styles = stylex.create({
   base: (value) => ({
@@ -55,6 +56,7 @@ function UserCard(props) {
   const { user, handleSelectedUser, selectedUser } = props;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
+  const navigate = useNavigate()
   // const [isMenuPosition, setMenuPosition] = useState({});
 
   const toggleMenu = () => {
@@ -67,12 +69,13 @@ function UserCard(props) {
 
   const handleMenuItemClick = (option) => {
     if (option === "viewUser") {
-      console.log("mostrar info completa");
+      // console.log("mostrar info completa");
       setIsUserInfoOpen(true)
       handleSelectedUser(user._id);
     }
     if (option === "editUser") {
       console.log("cargar fomulario de edicion");
+      navigate(`editar/${user._id}`);
     }
     if (option === "removeUser") {
       console.log("eliminar user");
