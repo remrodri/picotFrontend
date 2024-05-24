@@ -117,7 +117,7 @@ function UserCard(props) {
   };
 
   return (
-    <>
+    <div>
       <div
         {...stylex.props(
           styles.base(isUserInfoOpen ? "1rem 1rem 0 0" : "1rem")
@@ -170,7 +170,7 @@ function UserCard(props) {
           setIsUserInfoOpen={setIsUserInfoOpen}
         />
       ) : null}
-    </>
+    </div>
   );
 }
 export default UserCard;
