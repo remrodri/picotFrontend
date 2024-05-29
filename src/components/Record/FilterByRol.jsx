@@ -32,11 +32,11 @@ function FilterByRol(props) {
       <select
         name=""
         id="select"
-        defaultValue={"all"}
+        defaultValue={""}
         onChange={(e) => handleRoleSelect(e.target.value)}
         {...stylex.props(styles.optionStyle())}
       >
-        <option value="all">Todos</option>
+        <option value="">Todos</option>
         {roles.map((rol) => (
           <option key={rol._id} >{rol.roleName}</option>
         ))}

@@ -78,8 +78,8 @@ const styles = stylex.create({
 
 function RecordComponent() {
   const { loadRecords, records } = useRecords();
-  const { loadUsers,users} = useUsers();
-  const { loadRoles,} = useRoles();
+  const { loadUsers, users } = useUsers();
+  const { loadRoles, roles } = useRoles();
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [nameToFilter, setNameToFilter] = useState("");
@@ -91,7 +91,6 @@ function RecordComponent() {
     loadUsers();
     loadRoles();
     setDates();
-    console.log('::: ', );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -110,10 +109,10 @@ function RecordComponent() {
   };
 
   const handleRecords = () => {
-    const filtered = [filterByDate, filterByName].reduce(
+    const filtered = [filterByDate, filterByName, filterByRole].reduce(
       (acc, filterFunc) => filterFunc(acc),
       records
-    )
+    );
     setFilteredRecords(filtered);
   };
 
@@ -153,16 +152,33 @@ function RecordComponent() {
     // const filteredByName = filteredRecords.filter(record=>record.userId === userId)
     // console.log('filteredByName::: ', filteredByName);
     // setFilteredRecords(filteredByName);
-    if (!nameToFilter) return recordsToFilter
-      const user = users.find(user => `${user.firstName} ${user.lastName}` === nameToFilter);
-      if (!user) return [];
-      const userId = user._id;
-      return recordsToFilter.filter(record=>record.userId ===userId)
-    
+    if (!nameToFilter) return recordsToFilter;
+    const user = users.find(
+      (user) => `${user.firstName} ${user.lastName}` === nameToFilter
+    );
+    if (!user) return [];
+    const userId = user._id;
+    return recordsToFilter.filter((record) => record.userId === userId);
   };
 
-  const filterByRol = () => {
-    console.log("filtrar por rol: ",roleToFilter);
+  const filterByRole = (recordsToFilter) => {
+    // console.log("filtrar por rol: ", roleToFilter);
+    // console.log("recordsToFilter::: ", recordsToFilter);
+    // console.log("roles::: ", roles);
+    if (!roleToFilter||roleToFilter==="") return recordsToFilter;
+    const findedRoleId = roles.find(
+      (role) => role.roleName === roleToFilter
+    )._id;
+    // console.log("roleName::: ", findedRoleId);
+    if (!findedRoleId) return [];
+    return recordsToFilter.filter((record) => {
+      const userRoleId = users.find(
+        (user) => user._id === record.userId
+      ).roleId;
+      if (!userRoleId) return [];
+      return userRoleId === findedRoleId;
+    });
+    // return recordsToFilter;
   };
 
   return (
@@ -182,7 +198,12 @@ function RecordComponent() {
           />
           <FilterByName setNameToFilter={setNameToFilter} />
           <FilterByRol setRoleToFilter={setRoleToFilter} />
-          <button onClick={() => handleFilterClick()} {...stylex.props(styles.buttonStyle())}>Aplicar</button>
+          <button
+            onClick={() => handleFilterClick()}
+            {...stylex.props(styles.buttonStyle())}
+          >
+            Aplicar
+          </button>
         </div>
       </div>
       <div {...stylex.props(styles.bottomContainer())}>

@@ -43,7 +43,7 @@ function RecordCard({ record }) {
         <label htmlFor="">
           {record.createAt.split("T")[1].split(":")[0]}:
           {record.createAt.split("T")[1].split(":")[1]}:
-          {record.createAt.split("T")[1].split(":")[2].split(".")[0]}
+          {record.createAt.split("T")[1].split(":")[2].split("-")[0]}
         </label>
       </div>
       <div {...stylex.props(styles.labelContainer("30rem"))}>
