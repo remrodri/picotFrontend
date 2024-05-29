@@ -49,9 +49,16 @@ async function logoutRequest(userId) {
     const token = localStorage.getItem("token");
     if (token) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    } else {
+      console.error("No se encontro un token en localStorage");
     }
     const response = await axios.post(`${apiUrl}/api/v1/logout`, body);
-    console.log("response::: ", response);
+    // console.log("response::: ", response);
+    if (response.status===200) {
+      return {success:true}
+    } else {
+      return {success:false}
+    }
   } catch (error) {
     console.error("no se encontro un token en el localStorage");
     throw error;

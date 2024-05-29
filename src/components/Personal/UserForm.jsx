@@ -6,7 +6,7 @@ import { useRoles } from "../../context/role/RoleProvider";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useUsers } from "../../context/user/UserProvider";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 const styles = stylex.create({
   base: () => ({
@@ -113,40 +113,43 @@ function UserForm() {
   const { users, createUser, updateUser } = useUsers();
   const navigate = useNavigate();
   const params = useParams();
-  const initialValues = {
-    firstName: "",
-    lastName: "",
-    roleId: "",
-    phone: "",
-    email: "",
-    ci: "",
-  };
+  const initialValues = useMemo(() => (
+    {
+      firstName: "",
+      lastName: "",
+      roleId: "",
+      phone: "",
+      email: "",
+      ci: "",
+    }), []
+  )
+  
+  
+    const loadUser = useCallback(() => {
+        if (params.id) {
+          const userFinded = users.find((user) => user._id === params.id);
+          //console.log("userFinded::: ", userFinded);
+          if (userFinded) {
+            setFormValues({
+              firstName: userFinded.firstName || "",
+              lastName: userFinded.lastName || "",
+              roleId: userFinded.roleId || "",
+              phone: userFinded.phone || "",
+              email: userFinded.email || "",
+              ci: userFinded.ci || "",
+            });
+          } else {
+            setFormValues(initialValues);
+          }
+        } else {
+          setFormValues(initialValues);
+        }
+    },[params.id,users,initialValues])
 
   useEffect(() => {
     loadUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [users, params.id]);
-
-  const loadUser = () => {
-    if (params.id) {
-      const userFinded = users.find((user) => user._id === params.id);
-      //console.log("userFinded::: ", userFinded);
-      if (userFinded) {
-        setFormValues({
-          firstName: userFinded.firstName || "",
-          lastName: userFinded.lastName || "",
-          roleId: userFinded.roleId || "",
-          phone: userFinded.phone || "",
-          email: userFinded.email || "",
-          ci: userFinded.ci || "",
-        });
-      } else {
-        setFormValues(initialValues);
-      }
-    } else {
-      setFormValues(initialValues);
-    }
-  };
+    console.log('form::: ', );
+  }, [users, params.id, loadUser]);
 
   function filteredRoles() {
     return roles && roles.filter((role) => role.roleName !== "administrador");

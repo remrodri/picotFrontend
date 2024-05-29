@@ -13,7 +13,6 @@ const styles = stylex.create({
     borderRadius: "0 0 1rem 1rem",
     fontSize: "1.1rem",
   }),
-  cardContainer: () => ({}),
   buttonStyle: () => ({
     background: {
       default: "rgb(0, 127, 255)",
