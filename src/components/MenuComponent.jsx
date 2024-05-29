@@ -103,7 +103,7 @@ function MenuComponent() {
   const onLogout = () => {
     handleLogout();
     navigate("/");
-  }
+  };
   return (
     <div {...stylex.props(styles.base())}>
       <div {...stylex.props(styles.appNameContainer())}>
@@ -115,19 +115,24 @@ function MenuComponent() {
         <label htmlFor="">{getRoleName()}</label>
       </div>
       <div {...stylex.props(styles.buttonsContainer())}>
-        <button {...stylex.props(styles.buttonStyle())}
-          onClick={() =>  navigate("personal")}
+        <button
+          {...stylex.props(styles.buttonStyle())}
+          onClick={() => navigate("personal")}
         >
           Personal
         </button>
-        <button {...stylex.props(styles.buttonStyle())}>
-          Bitacora
+        <button
+          {...stylex.props(styles.buttonStyle())}
+          onClick={() => navigate("registro")}
+        >
+          Registro
         </button>
       </div>
       <div {...stylex.props(styles.buttonLogoutContainer())}>
         <button
-        onClick={()=>onLogout()}
-          {...stylex.props(styles.buttonLogoutStyle())}>
+          onClick={() => onLogout()}
+          {...stylex.props(styles.buttonLogoutStyle())}
+        >
           Cerrar Sesion
         </button>
       </div>

@@ -80,6 +80,7 @@ function CardsComponent() {
   useEffect(() => {
     loadRoles();
     loadUsers();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
   return (
     <div {...stylex.props(styles.base())}>

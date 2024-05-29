@@ -11,6 +11,8 @@ import { RoleContextProvider } from "./context/role/RoleProvider";
 import { UserContextProvider } from "./context/user/UserProvider";
 import CardsContainer from "./components/Personal/CardsContainer";
 import UserForm from "./components/Personal/UserForm";
+import RecordComponent from "./components/Record/RecordComponent";
+import { RecordContextProvider } from "./context/record/RecordProvider";
 
 function App() {
   return (
@@ -49,9 +51,17 @@ const router = createBrowserRouter([
           },
           {
             path: "editar/:id",
-            element:<UserForm/>
-          }
+            element: <UserForm />,
+          },
         ],
+      },
+      {
+        path: "registro",
+        element: (
+          <RecordContextProvider>
+            <RecordComponent />
+          </RecordContextProvider>
+        ),
       },
     ],
   },
