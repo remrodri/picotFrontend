@@ -35,7 +35,7 @@ function CardsContainer({ filteredRecords, handleRecords,users }) {
   useEffect(() => {
     handleRecords();
     addUserToRecord();
-    console.log('::: ', records);
+    // console.log('::: ', records);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [records,users]);
 
