@@ -13,6 +13,14 @@ import CardsContainer from "./components/Personal/CardsContainer";
 import UserForm from "./components/Personal/UserForm";
 import RecordComponent from "./components/Record/RecordComponent";
 import { RecordContextProvider } from "./context/record/RecordProvider";
+import FirstLoginPage from "./pages/FirstLoginPage";
+import PasswordForm from "./components/firstLogin/PasswordForm";
+import AnswerForm from "./components/firstLogin/AnswerForm";
+import { SetQuestionsAnswersContextProvider } from "./context/setQuestionsAnswers/SetQuestionsAnswersProvider";
+import RecoveryPasswordPage from "./pages/RecoveryPasswordPage";
+import EmailForm from "./components/recoveryPassword/EmailForm";
+import SetPasswordForm from "./components/recoveryPassword/SetPasswordForm";
+import QuestionForm from "./components/recoveryPassword/QuestionForm";
 
 function App() {
   return (
@@ -32,6 +40,28 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
+  },
+  {
+    path: "/recuperar-contraseña",
+    element: (
+      <SetQuestionsAnswersContextProvider>
+        <RecoveryPasswordPage />
+      </SetQuestionsAnswersContextProvider>
+    ),
+    children: [
+      {
+        path: "",
+        element: <EmailForm />,
+      },
+      {
+        path: "pregunta",
+        element: <QuestionForm />,
+      },
+      {
+        path: "restablecer-contraseña",
+        element: <SetPasswordForm />,
+      },
+    ],
   },
   {
     path: "/administrador",
@@ -62,6 +92,33 @@ const router = createBrowserRouter([
             <RecordComponent />
           </RecordContextProvider>
         ),
+      },
+    ],
+  },
+  {
+    path: "/operador",
+    element: <AdminPage />,
+  },
+  {
+    path: "/guia",
+    element: <AdminPage />,
+  },
+  {
+    path: "/configuracion-inicial",
+    element: (
+      <SetQuestionsAnswersContextProvider>
+        <FirstLoginPage />
+      </SetQuestionsAnswersContextProvider>
+    ),
+
+    children: [
+      {
+        path: "establecer-password",
+        element: <PasswordForm />,
+      },
+      {
+        path: "respuestas",
+        element: <AnswerForm />,
       },
     ],
   },

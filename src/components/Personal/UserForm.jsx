@@ -341,7 +341,7 @@ function UserForm() {
               </div>
               <div {...stylex.props(styles.fieldContainer())}>
                 <label htmlFor="ci" {...stylex.props(styles.labelFieldStyle())}>
-                  ci:
+                  Cedula de Identidad:
                 </label>
                 <Field
                   type="text"

@@ -2,7 +2,7 @@ import * as stylex from "@stylexjs/stylex";
 import * as Yup from "yup";
 import Button from "@mui/material/Button";
 import loginBackground from "../assets/images/loginBackground2.jpg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import useAuth from "../hooks/auth";
 // import { Alert, Stack } from "@mui/material";
@@ -77,6 +77,10 @@ const styles = stylex.create({
     height: "5rem",
     fontSize: "small",
   }),
+  recoveryPasswordStyle: () => ({
+    color: "aliceblue",
+    textDecoration:"none",
+  }),
   buttonContainer: () => ({
     height: "4rem",
   }),
@@ -90,7 +94,8 @@ const styles = stylex.create({
 });
 function LoginPage() {
   const navigate = useNavigate();
-  const { handleLogin, decodeTokenRoleName } = useAuth();
+  const { handleLogin, decodeTokenRoleName, decodedTokenFirstLogin } =
+    useAuth();
   const initialValues = {
     email: "",
     password: "",
@@ -102,13 +107,26 @@ function LoginPage() {
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       await handleLogin(values);
-      const roleName = decodeTokenRoleName() || "";
-      console.log("roleName::: ", roleName);
-      if (roleName === "administrador") {
-        localStorage.setItem("role",roleName)
+      // const roleName = decodeTokenRoleName() || "";
+      const token = localStorage.getItem("token");
+      if (token) {
+        
+        const roleName = decodeTokenRoleName();
+        // console.log("roleName::: ", roleName);
+        localStorage.setItem("role", roleName);
+        const firstLogin = decodedTokenFirstLogin() || "";
+        console.log("firstLogin::: ", firstLogin);
+        if (firstLogin) {
+          navigate("/configuracion-inicial/establecer-password");
+      } else if (roleName === "administrador") {
         navigate("/administrador/personal");
         // console.log("ir a la pagina de administrador")
+      } else if (roleName === "operador") {
+        navigate("/operador");
       }
+      } else {
+        alert("Credenciales incorrectas")
+    }
     } catch (error) {
       console.error("Error en el inicio de sesion".error.message);
     } finally {
@@ -161,7 +179,12 @@ function LoginPage() {
                     <ErrorMessage name="password" component={"div"} />
                   </div>
                   <div {...stylex.props(styles.recoveryPasswordContainer())}>
-                    <label htmlFor="">Recuperar contraseña</label>
+                    <NavLink
+                      to="/recuperar-contraseña"
+                      {...stylex.props(styles.recoveryPasswordStyle())}
+                    >
+                      Recuperar contraseña
+                    </NavLink>
                   </div>
                   <div {...stylex.props(styles.buttonContainer())}>
                     <Button
