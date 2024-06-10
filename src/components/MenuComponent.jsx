@@ -93,12 +93,18 @@ const styles = stylex.create({
 });
 
 function MenuComponent() {
-  const { handleLogout } = useAuth();
+  const { handleLogout, decodeTokenRoleName } = useAuth();
   const navigate = useNavigate();
 
-  const getRoleName = () => {
-    return localStorage.getItem("role");
-  };
+  // const getRoleName = () => {
+  //   return localStorage.getItem("role");
+  // };
+
+  const getRoleName2 = () => {
+    const roleName = decodeTokenRoleName();
+    // console.log('roleName::: ', roleName);
+    return roleName;
+  }
 
   const onLogout = () => {
     handleLogout();
@@ -112,7 +118,7 @@ function MenuComponent() {
         </label>
       </div>
       <div {...stylex.props(styles.roleNameContainer())}>
-        <label htmlFor="">{getRoleName()}</label>
+        <label htmlFor="">{getRoleName2()}</label>
       </div>
       <div {...stylex.props(styles.buttonsContainer())}>
         <button

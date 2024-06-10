@@ -26,7 +26,7 @@ const styles = stylex.create({
   }),
 });
 
-function UserDetail({ user, handleSelectedUser, setIsUserInfoOpen }) {
+function UserDetail({ user, handleSelectedUser, setIsUserInfoOpen,getRoleNameById }) {
   useEffect(() => {
     return () => {
       // console.log('desmontado')
@@ -41,7 +41,7 @@ function UserDetail({ user, handleSelectedUser, setIsUserInfoOpen }) {
       <label htmlFor="">Informacion completa</label>
       <label htmlFor="">Nombre(s): {user.firstName}</label>
       <label htmlFor="">Apellido(s): {user.lastName}</label>
-      <label htmlFor="">Rol: {user.roleId}</label>
+      <label htmlFor="">Rol: {getRoleNameById(user.roleId)}</label>
       <label htmlFor="">Celular: {user.phone}</label>
       <label htmlFor="">Email: {user.email}</label>
       <label htmlFor="">CI: {user.ci}</label>
