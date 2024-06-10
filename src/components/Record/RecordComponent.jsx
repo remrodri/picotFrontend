@@ -62,6 +62,12 @@ const styles = stylex.create({
     borderRadius: "0.5rem",
     cursor: "pointer",
     border: "none",
+    fontFamily: "Poppins",
+    background: {
+      default: "rgb(0, 127, 255)",
+      ":hover": "rgb(0, 110, 255)",
+    },
+    color:"aliceblue"
   }),
   bottomContainer: () => ({
     flexGrow: 1,

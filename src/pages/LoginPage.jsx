@@ -113,9 +113,9 @@ function LoginPage() {
         
         const roleName = decodeTokenRoleName();
         // console.log("roleName::: ", roleName);
-        localStorage.setItem("role", roleName);
+        // localStorage.setItem("role", roleName);
         const firstLogin = decodedTokenFirstLogin() || "";
-        console.log("firstLogin::: ", firstLogin);
+        // console.log("firstLogin::: ", firstLogin);
         if (firstLogin) {
           navigate("/configuracion-inicial/establecer-password");
       } else if (roleName === "administrador") {

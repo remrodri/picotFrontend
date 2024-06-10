@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useUsers } from "../../context/user/UserProvider";
+import { useRoles } from "../../context/role/RoleProvider";
 
 const styles = stylex.create({
   base: (value) => ({
@@ -53,11 +54,17 @@ const styles = stylex.create({
   buttonMenuCardStyle: () => ({
     width: "6rem",
   }),
+  rolePhoneContainer: () => ({
+    display: "flex",
+    justifyContent: "space-between",
+    padding:" 0 2.5rem 0"
+  })
 });
 
 const MySwal = withReactContent(Swal);
 
 function UserCard(props) {
+  const { roles } = useRoles();
   const { user, handleSelectedUser, selectedUser } = props;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
@@ -88,12 +95,12 @@ function UserCard(props) {
             didOpen: (toast) => {
               toast.onmouseenter = Swal.stopTimer;
               toast.onmouseleave = Swal.resumeTimer;
-            }
+            },
           });
           Toast.fire({
             icon: "success",
-            title:"Se elimino exitosamente"
-          })
+            title: "Se elimino exitosamente",
+          });
         }
       },
     });
@@ -111,11 +118,16 @@ function UserCard(props) {
     }
     if (option === "removeUser") {
       console.log("eliminar user");
-      handleRemoveUser()
+      handleRemoveUser();
     }
     toggleMenu();
   };
-
+  const getRoleNameById = (roleId) => {
+    // console.log('roleId::: ', roleId);
+    const roleName = roles.find((role) => role._id === roleId).roleName;
+    return roleName;
+  };
+  // console.log('roles::: ', roles);
   return (
     <div>
       <div
@@ -127,10 +139,13 @@ function UserCard(props) {
           <AccountCircle {...stylex.props(styles.iconStyle())} />
         </div>
         <div {...stylex.props(styles.dataInformationContainer())}>
-          <label htmlFor="">
+          <label htmlFor="userName">
             {user.firstName} {user.lastName}
           </label>
-          <label htmlFor="">{user.phone}</label>
+          <div {...stylex.props(styles.rolePhoneContainer())}>
+            <label htmlFor="role">{getRoleNameById(user.roleId)}</label>
+            <label htmlFor="phone">cel: {user.phone}</label>
+          </div>
         </div>
         <div
           {...stylex.props(styles.secondIconContainer())}
@@ -168,6 +183,7 @@ function UserCard(props) {
           user={user}
           handleSelectedUser={handleSelectedUser}
           setIsUserInfoOpen={setIsUserInfoOpen}
+          getRoleNameById={getRoleNameById}
         />
       ) : null}
     </div>
