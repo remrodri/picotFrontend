@@ -113,42 +113,42 @@ function UserForm() {
   const { users, createUser, updateUser } = useUsers();
   const navigate = useNavigate();
   const params = useParams();
-  const initialValues = useMemo(() => (
-    {
+  const initialValues = useMemo(
+    () => ({
       firstName: "",
       lastName: "",
       roleId: "",
       phone: "",
       email: "",
       ci: "",
-    }), []
-  )
-  
-  
-    const loadUser = useCallback(() => {
-        if (params.id) {
-          const userFinded = users.find((user) => user._id === params.id);
-          //console.log("userFinded::: ", userFinded);
-          if (userFinded) {
-            setFormValues({
-              firstName: userFinded.firstName || "",
-              lastName: userFinded.lastName || "",
-              roleId: userFinded.roleId || "",
-              phone: userFinded.phone || "",
-              email: userFinded.email || "",
-              ci: userFinded.ci || "",
-            });
-          } else {
-            setFormValues(initialValues);
-          }
-        } else {
-          setFormValues(initialValues);
-        }
-    },[params.id,users,initialValues])
+    }),
+    []
+  );
+
+  const loadUser = useCallback(() => {
+    if (params.id) {
+      const userFinded = users.find((user) => user._id === params.id);
+      //console.log("userFinded::: ", userFinded);
+      if (userFinded) {
+        setFormValues({
+          firstName: userFinded.firstName || "",
+          lastName: userFinded.lastName || "",
+          roleId: userFinded.roleId || "",
+          phone: userFinded.phone || "",
+          email: userFinded.email || "",
+          ci: userFinded.ci || "",
+        });
+      } else {
+        setFormValues(initialValues);
+      }
+    } else {
+      setFormValues(initialValues);
+    }
+  }, [params.id, users, initialValues]);
 
   useEffect(() => {
     loadUser();
-    console.log('form::: ', );
+    console.log("form::: ");
   }, [users, params.id, loadUser]);
 
   function filteredRoles() {

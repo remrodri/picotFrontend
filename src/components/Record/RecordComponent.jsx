@@ -10,14 +10,14 @@ import { useRoles } from "../../context/role/RoleProvider";
 
 const styles = stylex.create({
   base: () => ({
-    borderTopRightRadius: "1rem",
-    borderBottomRightRadius: "1rem",
+    borderTopRightRadius: "1.6rem",
+    borderBottomRightRadius: "1.6rem",
     height: "100%",
     background: {
       default: "rgba(35, 39, 46, 0.57)",
     },
     boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
-    backdropFilter: "blur(5px)",
+    backdropFilter: "blur(13px)",
     border: "1px solid rgba(0,0,0,0.3)",
     padding: "1rem",
     display: "flex",

@@ -21,6 +21,8 @@ import RecoveryPasswordPage from "./pages/RecoveryPasswordPage";
 import EmailForm from "./components/recoveryPassword/EmailForm";
 import SetPasswordForm from "./components/recoveryPassword/SetPasswordForm";
 import QuestionForm from "./components/recoveryPassword/QuestionForm";
+import TourPackageComponent from "./components/tourPackage/TourPackageComponent";
+import TourPackageForm from "./components/tourPackage/TourPackageForm";
 
 function App() {
   return (
@@ -92,6 +94,16 @@ const router = createBrowserRouter([
             <RecordComponent />
           </RecordContextProvider>
         ),
+      },
+      {
+        path: "paquete-turistico",
+        element: <TourPackageComponent />,
+        children: [
+          {
+            path: "nuevo",
+            element: <TourPackageForm />,
+          },
+        ],
       },
     ],
   },

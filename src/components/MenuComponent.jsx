@@ -59,10 +59,12 @@ const styles = stylex.create({
     height: "4rem",
     borderRadius: "1rem",
     background: {
-      default: "rgba(35, 39, 46, 0.57)",
-      ":hover": "rgba(35, 39, 46, 0.82)",
+      // default: "rgba(35, 39, 46, 0.57)",
+      default: "rgb(45, 138, 79)",
+      // ":hover": "rgba(35, 39, 46, 0.82)",
+      ":hover": "rgb(47, 105, 67)",
     },
-    color: "#f1eff2",
+    color: "aliceblue",
     fontFamily: "Poppins",
     fontWeight: "300",
     border: "1px solid rgba(35,39,46,0.3)",
@@ -83,8 +85,10 @@ const styles = stylex.create({
     // border: "none",
     fontFamily: "Poppins",
     background: {
-      default: "rgba(46, 38, 35, 0.57)",
-      ":hover": "rgba(48, 24, 24, 0.79)",
+      // default: "rgba(46, 38, 35, 0.57)",
+      default: "rgb(236, 113, 105)",
+      // ":hover": "rgba(48, 24, 24, 0.79)",
+      ":hover": "rgb(185, 88, 82)",
     },
     color: "#f1eff2",
     border: "1px solid rgba(46,38,35,0.3)",
@@ -132,6 +136,12 @@ function MenuComponent() {
           onClick={() => navigate("registro")}
         >
           Registro
+        </button>
+        <button
+        onClick={()=>navigate("paquete-turistico")}
+          {...stylex.props(styles.buttonStyle())}
+        >
+          Paquetes turisticos
         </button>
       </div>
       <div {...stylex.props(styles.buttonLogoutContainer())}>
