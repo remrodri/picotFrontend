@@ -1,4 +1,4 @@
-import adminBackground from "../assets/images/adminBackground.jpg";
+import adminBackground from "../assets/images/adminBackground3.jpg";
 import * as stylex from "@stylexjs/stylex";
 import MenuComponent from "../components/MenuComponent";
 import { Outlet } from "react-router-dom";

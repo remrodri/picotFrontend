@@ -35,7 +35,7 @@ const styles = stylex.create({
     flexDirection: "column",
     justifyContent: "center",
     gap: "0.3rem",
-    paddingLeft: "1rem",
+    padding: "0 1rem 0",
     fontSize: "1.2rem",
   }),
   secondIconContainer: () => ({
@@ -57,7 +57,13 @@ const styles = stylex.create({
   rolePhoneContainer: () => ({
     display: "flex",
     justifyContent: "space-between",
-    padding:" 0 2.5rem 0"
+    // padding: " 0 2.5rem 0",
+  }),
+  roleLabelContainer: () => ({
+    width:"45%"
+  }),
+  phoneLabelContainer: () => ({
+    width:"55%"
   })
 });
 
@@ -143,8 +149,12 @@ function UserCard(props) {
             {user.firstName} {user.lastName}
           </label>
           <div {...stylex.props(styles.rolePhoneContainer())}>
-            <label htmlFor="role">{getRoleNameById(user.roleId)}</label>
-            <label htmlFor="phone">cel: {user.phone}</label>
+            <div {...stylex.props(styles.roleLabelContainer())}>
+              <label htmlFor="role">{getRoleNameById(user.roleId)}</label>
+            </div>
+            <div {...stylex.props(styles.phoneLabelContainer())}>
+              <label htmlFor="phone">cel: {user.phone}</label>
+            </div>
           </div>
         </div>
         <div
