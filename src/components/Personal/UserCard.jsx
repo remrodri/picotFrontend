@@ -130,8 +130,8 @@ function UserCard(props) {
   };
   const getRoleNameById = (roleId) => {
     // console.log('roleId::: ', roleId);
-    const roleName = roles.find((role) => role._id === roleId).roleName;
-    return roleName;
+    const role = roles.find((role) => role._id === roleId);
+    return role?role.roleName:"Desconocido";
   };
   // console.log('roles::: ', roles);
   return (

@@ -43,7 +43,7 @@ function BasicInfoForm() {
         <Field
           type="number"
           name="duration"
-          {...stylex.props(formStyles.fieldStyle("30%"))}
+          {...stylex.props(formStyles.fieldStyle("40%"))}
         />
         <ErrorMessage name="duration" component={"div"} />
       </div>

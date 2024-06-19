@@ -19,7 +19,7 @@ function AccommodationForm() {
         />
         <ErrorMessage name="accommodationType" component={"div"} />
       </div>
-      <div {...stylex.props(formStyles.inputContainer())}>
+      <div {...stylex.props(formStyles.inputContainer("14rem"))}>
         <label
           htmlFor="services"
           {...stylex.props(formStyles.labelInputStyle())}
@@ -27,9 +27,9 @@ function AccommodationForm() {
           Servicios
         </label>
         <Field
-          type="text"
+          as="textarea"
           name="services"
-          {...stylex.props(formStyles.fieldStyle())}
+          {...stylex.props(formStyles.fieldStyle("100%","9rem"))}
         />
         <ErrorMessage name="services" component={"div"} />
       </div>

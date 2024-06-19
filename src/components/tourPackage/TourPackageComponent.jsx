@@ -41,7 +41,8 @@ const styles = stylex.create({
     fontWeight: "200",
   }),
   buttonsContainer: () => ({
-    flexGrow: 1,
+    // flexGrow: 1,
+    height:"4.8rem",
     padding: "1rem 1rem 1rem 1rem",
   }),
   buttonStyle: () => ({
@@ -65,7 +66,8 @@ const styles = stylex.create({
     // border: "1px solid rgba(255,255,255,0.3)",
     boxShadow: "0 4px 30px rgba(0,0,0,0.1)",
     // backdropFilter: "blur(5px)",
-    
+    overflowY: "auto",
+    display:"flex"
   }),
 });
 

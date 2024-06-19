@@ -60,7 +60,7 @@ const styles = stylex.create({
     borderRadius: "1rem",
     background: {
       // default: "rgba(35, 39, 46, 0.57)",
-      default: "rgb(45, 138, 79)",
+      default: "rgb(36, 186, 91)",
       // ":hover": "rgba(35, 39, 46, 0.82)",
       ":hover": "rgb(47, 105, 67)",
     },
