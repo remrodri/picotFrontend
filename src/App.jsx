@@ -23,6 +23,8 @@ import SetPasswordForm from "./components/recoveryPassword/SetPasswordForm";
 import QuestionForm from "./components/recoveryPassword/QuestionForm";
 import TourPackageComponent from "./components/tourPackage/TourPackageComponent";
 import TourPackageForm from "./components/tourPackage/TourPackageForm";
+import TourPackageCards from "./components/tourPackage/TourPackageCards";
+import { TourPackageContextProvider } from "./context/tourPackage/TourPackageProvider";
 
 function App() {
   return (
@@ -97,8 +99,16 @@ const router = createBrowserRouter([
       },
       {
         path: "paquete-turistico",
-        element: <TourPackageComponent />,
+        element: (
+          <TourPackageContextProvider>
+            <TourPackageComponent />
+          </TourPackageContextProvider>
+        ),
         children: [
+          {
+            path: "",
+            element: <TourPackageCards />,
+          },
           {
             path: "nuevo",
             element: <TourPackageForm />,

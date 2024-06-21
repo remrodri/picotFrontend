@@ -1,5 +1,7 @@
 import * as stylex from "@stylexjs/stylex";
 import { Outlet, useNavigate } from "react-router-dom";
+import { useTourPackages } from "../../context/tourPackage/TourPackageProvider";
+import { useEffect } from "react";
 
 const styles = stylex.create({
   base: () => ({
@@ -72,6 +74,12 @@ const styles = stylex.create({
 });
 
 function TourPackageComponent() {
+  const { loadTourPackages } = useTourPackages()
+  
+  useEffect(() => {
+    loadTourPackages()
+  },[])
+
   const navigate = useNavigate();
   return (
     <div {...stylex.props(styles.base())}>

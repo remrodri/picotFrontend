@@ -8,6 +8,9 @@ import MealsAndDiningForm from "./MealsAndDiningForm";
 import TransportationInfoForm from "./TransportationInfoForm";
 import ActivitiesAndAtractionsForm from "./ActivitiesAndAtractionsForm";
 import PriceInfoForm from "./PriceInfoForm";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
+import Modal from "./Modal";
 
 const styles = stylex.create({
   base: () => ({
@@ -61,6 +64,8 @@ const meals = [
   { name: "dinner", label: "Cena", state: false },
 ];
 
+const MySwal = withReactContent(Swal);
+
 function TourPackageForm() {
   const params = useParams();
   const initialValues = {
@@ -76,7 +81,7 @@ function TourPackageForm() {
     // mealAdditionalInfo: "",
     departureTime: "",
     arrivalTime: "",
-    attractions: [{name:""}],
+    attractions: [{ name: "" }],
     price: "",
   };
 
@@ -103,9 +108,8 @@ function TourPackageForm() {
     arrivalTime: Yup.string()
       .required("campo requerido")
       .matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Hora no válida (HH:mm)"),
-    attractions: Yup.array()
-      .of(
-        Yup.object().shape({
+    attractions: Yup.array().of(
+      Yup.object().shape({
         name: Yup.string().required("campo requerido"),
       })
     ),
@@ -116,7 +120,38 @@ function TourPackageForm() {
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    console.log("values::: ", values);
+    MySwal.fire({
+      title: <p>Los siguientes datos seran registrados</p>,
+      html: <Modal values={values} />,
+      showCancelButton: "true",
+      cancelButtonText: <p>Cancelar</p>,
+      confirmButtonText: <p>Registrar</p>,
+      confirmButtonColor: "rgb(51,153,255)",
+      preConfirm: async () => {
+        try {
+          // console.log("values::: ", values);
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showCancelButton: false,
+            timer: 6000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            },
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Registro exitoso",
+          });
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setSubmitting(false);
+        }
+      },
+    });
     setSubmitting(false);
   };
 
@@ -145,9 +180,8 @@ function TourPackageForm() {
                 {/* <AccommodationForm /> */}
                 <MealsAndDiningForm />
                 <TransportationInfoForm />
-                <ActivitiesAndAtractionsForm  />
+                <ActivitiesAndAtractionsForm />
                 <PriceInfoForm />
-                
               </div>
               <div {...stylex.props(styles.buttonContainer())}>
                 <button type="submit" disabled={isSubmitting}>

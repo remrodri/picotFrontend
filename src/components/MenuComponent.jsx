@@ -141,7 +141,7 @@ function MenuComponent() {
         onClick={()=>navigate("paquete-turistico")}
           {...stylex.props(styles.buttonStyle())}
         >
-          Paquetes turisticos
+          Paquete turistico
         </button>
       </div>
       <div {...stylex.props(styles.buttonLogoutContainer())}>
