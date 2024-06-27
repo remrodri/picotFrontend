@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import {
   createTourPackageRequest,
   getAllTourPackagesRequest,
+  updateTourPackageRequest,
 } from "../../services/tourPackageService";
 import { TourPackageContext } from "./TourPackageContext";
 
@@ -31,15 +32,47 @@ export const TourPackageContextProvider = ({ children }) => {
     try {
       const response = await createTourPackageRequest(tourPackage);
       if (response.success) {
-        console.log('response::: ', response);
+        console.log("response::: ", response);
         setTourPackages([
           ...tourPackages,
           { ...tourPackage, _id: response.tourPackageId },
         ]);
       }
-      return {success:response.success}
+      return { success: response.success };
     } catch (error) {
       console.error("Error al crear el tourPackage", error);
+    }
+  };
+  // const changeAvailability = (id) => {
+  //   console.log("id::: ", id);
+  //   const tourPackageFinded = tourPackages.find(
+  //     (tourPackage) => tourPackage._id === id
+  //   );
+  //   if (tourPackageFinded) {
+  //     console.log('tourPackageFinded::: ', tourPackageFinded);
+
+  //   }
+  // };
+
+  const updateTourPackage = async (id, tourPackageUpdated) => {
+    // console.log("id::: ", id);
+    // console.log("tourPackageUpdated::: ", tourPackageUpdated);
+    try {
+      const response = await updateTourPackageRequest(id, tourPackageUpdated);
+      if (response.success) {
+        setTourPackages(
+          tourPackages.map((tourPackage) =>
+            tourPackage._id === id
+              ? { ...tourPackage, ...tourPackageUpdated }
+              : tourPackage
+          )
+        );
+      } else {
+        console.log("problemas con el response");
+      }
+      return response;
+    } catch (error) {
+      console.error("Error al actualizar el tourPackage", error);
     }
   };
 
@@ -49,6 +82,8 @@ export const TourPackageContextProvider = ({ children }) => {
         tourPackages,
         loadTourPackages,
         createTourPackage,
+        // changeAvailability,
+        updateTourPackage,
       }}
     >
       {children}

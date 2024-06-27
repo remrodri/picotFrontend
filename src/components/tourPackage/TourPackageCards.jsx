@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useTourPackages } from "../../context/tourPackage/TourPackageProvider";
 import * as stylex from "@stylexjs/stylex";
@@ -28,22 +29,26 @@ const styles = stylex.create({
     gap: "1rem",
     alignContent: "flex-start",
     flexFlow: "row wrap",
-    overflowY:"auto"
+    overflowY: "auto",
   }),
 });
 
 function TourPackageCards() {
   const { tourPackages } = useTourPackages();
   const [filteredTourPackages, setFilteredTourPackages] = useState([]);
-  console.log("tourPackages::: ", tourPackages);
+  const [selectedOption, setSelectedOption] = useState("available");
+  // console.log("tourPackages::: ", tourPackages);
 
   useEffect(() => {
-    filterTourPackages("all");
+    if (tourPackages.length > 0) {
+      filterTourPackages(selectedOption);
+    }
   }, [tourPackages]);
 
   const handleSelectChange = (event) => {
     const option = event.target.value;
-    console.log("option::: ", option);
+    // console.log("option::: ", option);
+    setSelectedOption(option);
     filterTourPackages(option);
   };
   const filterTourPackages = (option) => {
@@ -65,10 +70,10 @@ function TourPackageCards() {
   return (
     <div {...stylex.props(styles.base())}>
       <div {...stylex.props(styles.topContainer())}>
-        <label htmlFor="filter">Filtrar por disponibilidad</label>
+        <label htmlFor="title">Filtrar por disponibilidad</label>
         <select
           id="tourPackageFilter"
-          defaultValue={"all"}
+          defaultValue={"available"}
           onChange={handleSelectChange}
         >
           <option value="all">Todos</option>

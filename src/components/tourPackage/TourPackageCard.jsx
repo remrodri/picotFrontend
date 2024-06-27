@@ -3,6 +3,7 @@ import { MoreVert } from "@mui/icons-material";
 import * as stylex from "@stylexjs/stylex";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTourPackages } from "../../context/tourPackage/TourPackageProvider";
 
 const styles = stylex.create({
   base: () => ({
@@ -59,17 +60,9 @@ const styles = stylex.create({
 
 function TourPackageCard(props) {
   const { tourPackage } = props;
+  const { updateTourPackage } = useTourPackages();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
-  // const [ishidden, setIsHidden] = useState(false);
-
-  // const handleMouseDown = () => {
-  //   setIsHidden(true);
-  // };
-
-  // const handleMouseUp = () => {
-  //   setIsHidden(false);
-  // };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -87,8 +80,12 @@ function TourPackageCard(props) {
     console.log("::: mostrar los type tours");
   };
 
-  const togleAvailability = () => {
-    console.log("::: cambiar el estado de tourPackage");
+  const toggleAvailability = () => {
+    // console.log("::: cambiar el estado de tourPackage");
+    const newStatus = tourPackage.status==="available"? "unavailable" : "available";
+    // console.log('newStatus::: ', newStatus);
+
+    updateTourPackage(tourPackage._id, { status: newStatus });
   };
 
   const editTourPackage = () => {
@@ -139,7 +136,7 @@ function TourPackageCard(props) {
             </button>
             <button
               {...stylex.props(styles.buttonStyle())}
-              onClick={togleAvailability}
+              onClick={toggleAvailability}
             >
               {tourPackage.status === "available" ? "inhabilitar" : "habilitar"}
             </button>

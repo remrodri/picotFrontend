@@ -31,8 +31,8 @@ async function createTourPackageRequest(body) {
     }
     const response = await axios.post(`${apiUrl}/api/v1/tour-packages`, body);
     if (response.status === 201) {
-      console.log('response.data::: ', response.data);
-      return { success: true,  tourPackageId: response.data._id };
+      console.log("response.data::: ", response.data);
+      return { success: true, tourPackageId: response.data._id };
     }
   } catch (error) {
     console.error("Error al crear el tourPackage: ", error.message);
@@ -40,4 +40,30 @@ async function createTourPackageRequest(body) {
   }
 }
 
-export { getAllTourPackagesRequest, createTourPackageRequest };
+async function updateTourPackageRequest(id, body) {
+  try {
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      const response = await axios.patch(
+        `${apiUrl}/api/v1/tour-packages/${id}`,
+        body
+      );
+      if (response.status === 200) {
+        return { success: true, tourPackage: response.data };
+      } else {
+        return { success: false };
+      }
+    } else {
+      console.error("No se encontro el token en el localStorage");
+    }
+  } catch (error) {
+    console.error("Error al actualizar el tourPackage: ", error.message);
+  }
+}
+
+export {
+  getAllTourPackagesRequest,
+  createTourPackageRequest,
+  updateTourPackageRequest,
+};

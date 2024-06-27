@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useNavigate, useParams } from "react-router-dom";
 import * as Yup from "yup";
 import * as stylex from "@stylexjs/stylex";
@@ -87,7 +88,7 @@ function TourPackageForm() {
     destination: "",
     // tourTypes: [],
     // status: "",
-    type: "",
+    type: "national",
   };
 
   const loadTourPackage = () => {
@@ -111,7 +112,7 @@ function TourPackageForm() {
 
   useEffect(() => {
     loadTourPackage();
-  },[])
+  }, []);
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
@@ -172,7 +173,9 @@ function TourPackageForm() {
   //     showCloseButton: true,
   //   });
   // };
-
+  if (formValues === null) {
+    return null;
+  }
   return (
     <div {...stylex.props(styles.base())}>
       <Formik
