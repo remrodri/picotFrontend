@@ -1,197 +1,266 @@
-import * as stylex from "@stylexjs/stylex";
+import { useNavigate, useParams } from "react-router-dom";
 import * as Yup from "yup";
-import { useParams } from "react-router-dom";
-import BasicInfoForm from "./BasicInfoForm";
-// import AccommodationForm from "./AccommodationForm";
-import { Form, Formik } from "formik";
-import MealsAndDiningForm from "./MealsAndDiningForm";
-import TransportationInfoForm from "./TransportationInfoForm";
-import ActivitiesAndAtractionsForm from "./ActivitiesAndAtractionsForm";
-import PriceInfoForm from "./PriceInfoForm";
+import * as stylex from "@stylexjs/stylex";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
-import Modal from "./Modal";
+// import TourTypes from "./tourType/TourTypes";
+import TourPackageModal from "./TourPackageModal";
+import { useTourPackages } from "../../context/tourPackage/TourPackageProvider";
+import { useEffect, useState } from "react";
 
 const styles = stylex.create({
   base: () => ({
-    // height: "calc(100% - 4rem)",
-    // width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    // alignItems: "center",
-    // justifyContent: "center",
-  }),
-  mainLabelContainer: () => ({
-    height: "3rem",
-    display: "flex",
-    alignItems: "center",
-    color: "aliceblue",
-    justifyContent: "center",
-    fontSize: "1.5rem",
-    fontWeight: "200",
-  }),
-  // formLabelStyle: () => ({}),
-  mainContainer: () => ({
-    // width: "45rem",
-    // height: "55rem",
-    // background: "rgba(255, 255, 255, 0.2)",
-    // border: "1px solid rgba(255, 255, 255, 0.3)",
-    // borderRadius: "1rem",
-    // height:"100%",
     width: "100%",
-    flexGrow: 1,
+    height: "100%",
     display: "flex",
-    // gap: "1rem",
-    padding: "1rem 1rem 0 1rem",
-    // paddingLeft:"1rem"
+    justifyContent: "center",
+    alignItems: "center",
   }),
   formContainer: () => ({
-    height: "calc(100% - 4rem)",
-    width: "100%",
+    width: "45rem",
+    height: "35rem",
+    borderRadius: "1rem",
+    background: "rgba(255,255,255,0.2)",
+    border: "1px solid rgba(255,255,255,0.2)",
+  }),
+  titleContainer: () => ({
+    color: "aliceblue",
+    fontSize: "1.5rem",
+    height: "4rem",
     display: "flex",
-    alignContent: "flex-start",
-    gap: "1rem",
-    flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "center",
+  }),
+  inputsContainer: () => ({ height: "24rem" }),
+  inputContainer: () => ({
+    display: "flex",
+    flexDirection: "column",
+    height: "6rem",
+    padding: "0 3rem 0 3rem",
+  }),
+  labelInputStyle: () => ({
+    color: "aliceblue",
+    fontSize: "1.3rem",
+  }),
+  fieldStyle: () => ({
+    height: "2.8rem",
+    borderRadius: "0.7rem",
+    border: "none",
+    paddingLeft: "1rem",
+    fontFamily: "Poppins",
+  }),
+  selectStyle: () => ({
+    width: "12rem",
+    height: "2.8rem",
+    borderRadius: "0.7rem",
+    border: "none",
+    fontFamily: "Poppins",
+    // textAlign:"center  "
   }),
   buttonContainer: () => ({
-    height: "4rem",
+    height: "7rem",
+    padding: "1rem 3rem 2rem 3rem",
+  }),
+  buttonStyle: () => ({
+    height: "100%",
+    width: "100%",
+    borderRadius: "0.7rem",
+    background: {
+      default: "rgb(0, 127, 255)",
+    },
+    color: "aliceblue",
+    border: "none",
+    fontFamily: "Poppins",
   }),
 });
-
-const meals = [
-  { name: "breakfast", label: "Desayuno", state: false },
-  { name: "lunch", label: "Almuerzo", state: false },
-  { name: "dinner", label: "Cena", state: false },
-];
 
 const MySwal = withReactContent(Swal);
 
 function TourPackageForm() {
+  const { createTourPackage, tourPackages } = useTourPackages();
+  const navigate = useNavigate();
   const params = useParams();
+  const [formValues, setFormValues] = useState(null);
   const initialValues = {
-    packageName: "",
+    name: "",
     destination: "",
-    duration: 1,
-    // accommodationType: "",
-    // services: "",
-    meals: meals.reduce((acc, meal) => {
-      acc[meal.name] = meal.state;
-      return acc;
-    }, {}),
-    // mealAdditionalInfo: "",
-    departureTime: "",
-    arrivalTime: "",
-    attractions: [{ name: "" }],
-    price: "",
+    // tourTypes: [],
+    // status: "",
+    type: "",
   };
 
-  const validationSchema = Yup.object().shape({
-    packageName: Yup.string().required("campo requerido"),
-    destination: Yup.string().required("campo requerido"),
-    duration: Yup.number()
-      .min(1)
-      .positive()
-      .integer()
-      .required("campo requerido"),
-    // accommodationType: Yup.string().required("campo requerido"),
-    // services: Yup.string().required("campo requerido"),
+  const loadTourPackage = () => {
+    if (params.id) {
+      const tourPackageFinded = tourPackages.find(
+        (tourPackage) => tourPackage._id === params.id
+      );
+      if (tourPackageFinded) {
+        setFormValues({
+          name: tourPackageFinded.name || "",
+          destination: tourPackageFinded.destination || "",
+          type: tourPackageFinded.type || "",
+        });
+      } else {
+        setFormValues(initialValues);
+      }
+    } else {
+      setFormValues(initialValues);
+    }
+  };
 
-    meals: Yup.object().shape({
-      breakfast: Yup.boolean(),
-      lunch: Yup.boolean(),
-      dinner: Yup.boolean(),
-    }),
-    // mealAdditionalInfo: Yup.string().required("campo requerido"),
-    departureTime: Yup.string()
-      .required("campo requerido")
-      .matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Hora no válida (HH:mm)"),
-    arrivalTime: Yup.string()
-      .required("campo requerido")
-      .matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Hora no válida (HH:mm)"),
-    attractions: Yup.array().of(
-      Yup.object().shape({
-        name: Yup.string().required("campo requerido"),
-      })
-    ),
-    price: Yup.number()
-      .min(0)
-      .required("campo requerido")
-      .typeError("debe ser un numero valido"),
+  useEffect(() => {
+    loadTourPackage();
+  },[])
+
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required("Name is required"),
+    destination: Yup.string().required("Destination is required"),
+    // tourTypes: Yup.array(),
+    // status: Yup.string().required("Status is required"),
+    type: Yup.string().required("Type is required"),
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
     MySwal.fire({
-      title: <p>Los siguientes datos seran registrados</p>,
-      html: <Modal values={values} />,
-      showCancelButton: "true",
+      title: <p>Los siguientes datos seran registrados:</p>,
+      html: <TourPackageModal values={values} />,
+      showCancelButton: true,
       cancelButtonText: <p>Cancelar</p>,
       confirmButtonText: <p>Registrar</p>,
       confirmButtonColor: "rgb(51,153,255)",
       preConfirm: async () => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showCancelButton: false,
+          timer: 6000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseover = Swal.stopTimer;
+            toast.onmouseout = Swal.resumeTimer;
+          },
+        });
         try {
-          // console.log("values::: ", values);
-          const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showCancelButton: false,
-            timer: 6000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.onmouseenter = Swal.stopTimer;
-              toast.onmouseleave = Swal.resumeTimer;
-            },
-          });
-          Toast.fire({
-            icon: "success",
-            title: "Registro exitoso",
-          });
+          const response = await createTourPackage(values);
+          console.log("response::: ", response);
+          if (response.success) {
+            Toast.fire({
+              icon: "success",
+              title: "Registro exitoso",
+            });
+          }
         } catch (error) {
           console.error(error);
+          Toast.fire({
+            icon: "error",
+            title: "Error al registrar",
+          });
         } finally {
           setSubmitting(false);
+          navigate("../");
         }
       },
     });
-    setSubmitting(false);
   };
+
+  // const showTourTypes = () => {
+  //   console.log("mostrar tour types::: ");
+  //   MySwal.fire({
+  //     title: "Tours",
+  //     html: <TourTypes />,
+  //     showCloseButton: true,
+  //   });
+  // };
 
   return (
     <div {...stylex.props(styles.base())}>
-      <div>
-        <div {...stylex.props(styles.mainLabelContainer())}>
-          <label htmlFor="title">
-            {params.id
-              ? "Formulario de actualizacion de paquete turistico"
-              : "Formulario de registro de paquete turistico"}
-          </label>
-        </div>
-      </div>
-      <div {...stylex.props(styles.mainContainer())}>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={handleSubmit}
-          enableReinitialize={true}
-        >
-          {({ isSubmitting }) => (
-            <Form>
-              <div {...stylex.props(styles.formContainer())}>
-                <BasicInfoForm />
-                {/* <AccommodationForm /> */}
-                <MealsAndDiningForm />
-                <TransportationInfoForm />
-                <ActivitiesAndAtractionsForm />
-                <PriceInfoForm />
+      <Formik
+        initialValues={formValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+        enableReinitialize={true}
+      >
+        {({ isSubmitting }) => (
+          <Form {...stylex.props(styles.formContainer())}>
+            <div {...stylex.props(styles.titleContainer())}>
+              <label htmlFor="title">
+                {params.id
+                  ? "Formulario de actualizacion"
+                  : "Formulario de registro"}
+              </label>
+            </div>
+            <div {...stylex.props(styles.inputsContainer())}>
+              <div {...stylex.props(styles.inputContainer())}>
+                <label
+                  htmlFor="name"
+                  {...stylex.props(styles.labelInputStyle())}
+                >
+                  Nombre del paquete:
+                </label>
+                <Field
+                  type="text"
+                  name="name"
+                  {...stylex.props(styles.fieldStyle())}
+                />
+                <ErrorMessage name="name" component={"div"} />
               </div>
-              <div {...stylex.props(styles.buttonContainer())}>
-                <button type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? "Enviando..." : "Enviar"}
-                </button>
+              <div {...stylex.props(styles.inputContainer())}>
+                <label
+                  htmlFor="destination"
+                  {...stylex.props(styles.labelInputStyle())}
+                >
+                  Destino:
+                </label>
+                <Field
+                  type="text"
+                  name="destination"
+                  {...stylex.props(styles.fieldStyle())}
+                />
+                <ErrorMessage name="destination" component={"div"} />
               </div>
-            </Form>
-          )}
-        </Formik>
-      </div>
+              {/* <div>
+                Tours:{" "}
+                <button type="button" onClick={showTourTypes}>
+                  Nuevo
+                </button> 
+              </div> */}
+              {/* <div>
+                <label htmlFor="status">estado</label>
+                <Field as="select" name="status">
+                  <option value={"unavailable"}>No disponible</option>
+                  <option value="available">Disponible</option>
+                </Field>
+              </div> */}
+              <div {...stylex.props(styles.inputContainer())}>
+                <label
+                  htmlFor="type"
+                  {...stylex.props(styles.labelInputStyle())}
+                >
+                  Tipo de paquete
+                </label>
+                <Field
+                  as="select"
+                  name="type"
+                  {...stylex.props(styles.selectStyle())}
+                >
+                  <option value={"national"}>Nacional</option>
+                  <option value={"international"}>Internacional</option>
+                </Field>
+              </div>
+            </div>
+            <div {...stylex.props(styles.buttonContainer())}>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                {...stylex.props(styles.buttonStyle())}
+              >
+                {isSubmitting ? "Enviando..." : "Enviar"}
+              </button>
+            </div>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 }

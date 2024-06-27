@@ -2,6 +2,7 @@
 import { MoreVert } from "@mui/icons-material";
 import * as stylex from "@stylexjs/stylex";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const styles = stylex.create({
   base: () => ({
@@ -11,6 +12,7 @@ const styles = stylex.create({
     borderRadius: "0.5rem",
     padding: "1rem",
     display: "flex",
+    position: "relative",
     // flexDirection: "column",
     // gap: "1rem",
     // justifyContent: "center",
@@ -50,11 +52,24 @@ const styles = stylex.create({
     width: "8rem",
     paddingLeft: "1rem",
   }),
+  hidden: () => ({
+    display: "none",
+  }),
 });
 
 function TourPackageCard(props) {
   const { tourPackage } = props;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  // const [ishidden, setIsHidden] = useState(false);
+
+  // const handleMouseDown = () => {
+  //   setIsHidden(true);
+  // };
+
+  // const handleMouseUp = () => {
+  //   setIsHidden(false);
+  // };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -78,6 +93,7 @@ function TourPackageCard(props) {
 
   const editTourPackage = () => {
     console.log("::: editar la info");
+    navigate(`editar/${tourPackage._id}`);
   };
 
   // console.log("tourPackage::: ", tourPackage);
@@ -103,16 +119,36 @@ function TourPackageCard(props) {
           <p>{translateType()}</p>
         </div>
       </div>
-      <div {...stylex.props(styles.menuIconContainer())} onClick={toggleMenu}>
+      <div
+        {...stylex.props(styles.menuIconContainer())}
+        onClick={toggleMenu}
+        // onMouseDown={handleMouseDown}
+        // onMouseUp={handleMouseUp}
+      >
         <MoreVert {...stylex.props(styles.menuIconStyle())} />
         {isMenuOpen && (
           <div
             onMouseLeave={toggleMenu}
             {...stylex.props(styles.menuButtonsStyle())}
           >
-            <button {...stylex.props(styles.buttonStyle())} onClick={showTypeTours}>ver tours</button>
-            <button {...stylex.props(styles.buttonStyle())} onClick={togleAvailability}>{ tourPackage.status==="available"?"inhabilitar":"habilitar"}</button>
-            <button {...stylex.props(styles.buttonStyle())} onClick={editTourPackage}>editar</button>
+            <button
+              {...stylex.props(styles.buttonStyle())}
+              onClick={showTypeTours}
+            >
+              ver tours
+            </button>
+            <button
+              {...stylex.props(styles.buttonStyle())}
+              onClick={togleAvailability}
+            >
+              {tourPackage.status === "available" ? "inhabilitar" : "habilitar"}
+            </button>
+            <button
+              {...stylex.props(styles.buttonStyle())}
+              onClick={editTourPackage}
+            >
+              editar
+            </button>
           </div>
         )}
       </div>

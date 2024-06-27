@@ -1,5 +1,8 @@
 import { useContext, useState } from "react";
-import { getAllTourPackagesRequest } from "../../services/tourPackageService";
+import {
+  createTourPackageRequest,
+  getAllTourPackagesRequest,
+} from "../../services/tourPackageService";
 import { TourPackageContext } from "./TourPackageContext";
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -17,11 +20,26 @@ export const TourPackageContextProvider = ({ children }) => {
   const loadTourPackages = async () => {
     try {
       const response = await getAllTourPackagesRequest();
-      if (response.succes) {
+      if (response.success) {
         setTourPackages(response.tourPackages);
       }
     } catch (error) {
       console.error("Error al obtener los tourPackages", error);
+    }
+  };
+  const createTourPackage = async (tourPackage) => {
+    try {
+      const response = await createTourPackageRequest(tourPackage);
+      if (response.success) {
+        console.log('response::: ', response);
+        setTourPackages([
+          ...tourPackages,
+          { ...tourPackage, _id: response.tourPackageId },
+        ]);
+      }
+      return {success:response.success}
+    } catch (error) {
+      console.error("Error al crear el tourPackage", error);
     }
   };
 
@@ -30,6 +48,7 @@ export const TourPackageContextProvider = ({ children }) => {
       value={{
         tourPackages,
         loadTourPackages,
+        createTourPackage,
       }}
     >
       {children}

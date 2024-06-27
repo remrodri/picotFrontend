@@ -28,13 +28,14 @@ const styles = stylex.create({
     gap: "1rem",
     alignContent: "flex-start",
     flexFlow: "row wrap",
+    overflowY:"auto"
   }),
 });
 
 function TourPackageCards() {
   const { tourPackages } = useTourPackages();
   const [filteredTourPackages, setFilteredTourPackages] = useState([]);
-  // console.log("tourPackages::: ", tourPackages);
+  console.log("tourPackages::: ", tourPackages);
 
   useEffect(() => {
     filterTourPackages("all");
