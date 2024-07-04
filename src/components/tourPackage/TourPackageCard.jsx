@@ -76,13 +76,15 @@ function TourPackageCard(props) {
     }
   };
 
-  const showTypeTours = () => {
-    console.log("::: mostrar los type tours");
+  const showTourTypes = () => {
+    // console.log("::: mostrar los type tours");
+    navigate(`tours/${tourPackage._id}`);
   };
 
   const toggleAvailability = () => {
     // console.log("::: cambiar el estado de tourPackage");
-    const newStatus = tourPackage.status==="available"? "unavailable" : "available";
+    const newStatus =
+      tourPackage.status === "available" ? "unavailable" : "available";
     // console.log('newStatus::: ', newStatus);
 
     updateTourPackage(tourPackage._id, { status: newStatus });
@@ -130,7 +132,7 @@ function TourPackageCard(props) {
           >
             <button
               {...stylex.props(styles.buttonStyle())}
-              onClick={showTypeTours}
+              onClick={showTourTypes}
             >
               ver tours
             </button>

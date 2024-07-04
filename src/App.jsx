@@ -26,6 +26,10 @@ import TourPackageComponent from "./components/tourPackage/TourPackageComponent"
 import TourPackageCards from "./components/tourPackage/TourPackageCards";
 import { TourPackageContextProvider } from "./context/tourPackage/TourPackageProvider";
 import TourPackageForm from "./components/tourPackage/TourPackageForm";
+import TourTypes from "./components/tourPackage/tourType/TourTypes";
+// import TourTypeForm from "./components/tourPackage/tourType/tourTypeForm";
+import TourTypeCardsContainer from "./components/tourPackage/tourType/TourTypeCardsContainer";
+import NewTourTypeForm from "./components/tourPackage/tourType/NewTourTypeForm";
 // import TourPackageForm from "./components/tourPackage/TourPackageForm";
 
 function App() {
@@ -113,12 +117,23 @@ const router = createBrowserRouter([
           },
           {
             path: "nuevo",
-            element: <TourPackageForm/>,
+            element: <TourPackageForm />,
           },
           {
             path: "editar/:id",
-            element: <TourPackageForm/>,
-          }
+            element: <TourPackageForm />,
+          },
+          {
+            path: "tours/:id",
+            element: <TourTypes />,
+            children: [
+              { path: "", element: <TourTypeCardsContainer /> },
+              {
+                path: "nuevo",
+                element: <NewTourTypeForm />,
+              },
+            ],
+          },
         ],
       },
     ],

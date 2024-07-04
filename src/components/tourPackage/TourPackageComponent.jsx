@@ -74,7 +74,7 @@ const styles = stylex.create({
 });
 
 function TourPackageComponent() {
-  const { loadTourPackages } = useTourPackages()
+  const { loadTourPackages, } = useTourPackages()
   
   useEffect(() => {
     loadTourPackages()
