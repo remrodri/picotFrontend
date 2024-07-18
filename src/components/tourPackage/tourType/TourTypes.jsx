@@ -1,6 +1,6 @@
 import * as stylex from "@stylexjs/stylex";
 import { useTourPackages } from "../../../context/tourPackage/TourPackageProvider";
-import { Outlet, useParams } from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 const styles = stylex.create({
@@ -9,12 +9,18 @@ const styles = stylex.create({
     width: "100%",
   }),
   titleContainer: () => ({
-    height: "4rem",
-    fontSize: "1.3rem",
+    height: "5rem",
+    fontSize: "1.5rem",
     color: "aliceblue",
     display: "flex",
-    justifyContent: "center",
+    // justifyContent: "center",
     alignItems: "center",
+  }),
+  titleStyle: () => ({
+    width:"100%",
+    display:"flex",
+    justifyContent: "center",
+    padding:"0 16rem 0 0"
   }),
   bottomContainer: () => ({
     height: "calc(100% - 4rem)",
@@ -27,10 +33,7 @@ const styles = stylex.create({
     alignItems: "center",
   }),
   buttonContainer: () => ({
-    height: "4rem",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    padding: "0 0 0 1rem",
   }),
   buttonStyle: () => ({
     height: "3rem",
@@ -46,8 +49,7 @@ function TourTypes() {
   const params = useParams();
   const { tourPackages } = useTourPackages();
   const [tourPackage, setTourPackage] = useState({});
-  // const navigate = useNavigate();
-
+  const navigate = useNavigate();
   const loadTourPackage = () => {
     if (params.id) {
       const tourPackage =
@@ -71,7 +73,18 @@ function TourTypes() {
   return (
     <div {...stylex.props(styles.base())}>
       <div {...stylex.props(styles.titleContainer())}>
-        <label htmlFor="title">Paquete turistico: {tourPackage.name}</label>
+        <div {...stylex.props(styles.buttonContainer())}>
+          <button
+            type="button"
+            onClick={() => navigate("nuevo")}
+            {...stylex.props(styles.buttonStyle())}
+          >
+            Agregar tour
+          </button>
+        </div>
+        <div {...stylex.props(styles.titleStyle())}>
+          <label htmlFor="title">Paquete turistico: {tourPackage.name}</label>
+        </div>
       </div>
       <div {...stylex.props(styles.bottomContainer())}>
         {/* {tourPackage.tourTypes > 0 ? (

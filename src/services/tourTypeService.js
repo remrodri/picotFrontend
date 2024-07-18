@@ -40,6 +40,28 @@ const createTourTypeRequest = async (body) => {
   }
 };
 
+const updateTourTypeRequest = async (id, body) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      const response = await axios.patch(
+        `${apiUrl}/api/v1/tour-types/${id}`,
+        body
+      );
+      if (response.status === 200) {
+        return { success: true, tourType: response.data };
+      } else {
+        return { success: false, message: response.data.message };
+      }
+    } else {
+      console.error("no se encontro el token en el localStorage");
+    }
+  } catch (error) {
+    ("Error al actualizar el tourType");
+  }
+};
+
 // const addNewTourType = async (tourPackageId,body) => {
 //   try {
 //     const token = localStorage.getItem("token");
@@ -50,4 +72,8 @@ const createTourTypeRequest = async (body) => {
 //   } catch (error) {}
 // };
 
-export { getAllTourTypesByTourPackageIdRequest,createTourTypeRequest };
+export {
+  getAllTourTypesByTourPackageIdRequest,
+  createTourTypeRequest,
+  updateTourTypeRequest,
+};
